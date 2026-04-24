@@ -10,6 +10,9 @@ import { Accounts } from './components/Accounts';
 import { useEffect } from 'react';
 import ProtectedRoute from './components/ProtectedRoute';
 import Profilepage from './components/Profilepage';
+import MagentaLogo from './assets/Magenta data visualisation on monitor.png';
+import Faceicon from './assets/faceicon.png';
+import DownArrowIcon from './assets/downarrow.png';
 // Dashboard layout: sidebar + header + the routed page content
 function DashboardLayout() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -45,7 +48,7 @@ function DashboardLayout() {
       <div className="sidebar">
         <div id="navtitle">
           <div>
-            <img src="src\assets\Magenta data visualisation on monitor.png" alt="" />
+            <img src={MagentaLogo} alt="" />
           </div>
           <h3>Dashboard</h3>
         </div>
@@ -76,9 +79,9 @@ function DashboardLayout() {
   
           </div>
           <div id='userprofile'>
-            <img src='src\assets\faceicon.png' alt="profile" />
+            <img src={Faceicon} alt="profile" />
             <h3>{username}</h3>
-            <button id='dropdown-btn' onClick={handleDropdown}><img src='src\assets\downarrow.png' alt="" /></button>
+            <button id='dropdown-btn' onClick={handleDropdown}><img src={DownArrowIcon} alt="" /></button>
             {
               showDropdown && (
                 <div className='dropdown'>
