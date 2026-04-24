@@ -1,0 +1,134 @@
+.loginPage {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* The vibrant gradient background */
+    background: linear-gradient(45deg, #00dbde 0%, #fc00ff 100%);
+    /* font-family: 'Poppins', sans-serif; */
+}
+
+.loginCard {
+    background-color: white;
+    width: 400px;
+    padding: 60px 40px;
+    border-radius: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.loginCard h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+    color: transparent;
+    font-style: italic;
+    font-family:monospace;
+    background: linear-gradient(to right, #00dbde, #fc00ff);
+    -webkit-background-clip: text;
+    background-clip: text;
+
+}
+
+.form {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.inputGroup {
+    margin-bottom: 25px;
+    position: relative;
+}
+
+.inputGroup label {
+    font-size: 0.9rem;
+    color: #4e4e4e;
+    font-weight: 700;
+    display: block;
+    margin-bottom: 8px;
+    font-variant: small-caps;
+    
+}
+
+.inputGroup input {
+    width: 100%;
+    border: none;
+    border-bottom: 2px solid #adadad;
+    padding: 10px 0;
+    outline: none;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+.inputGroup input:focus {
+    border-bottom: 2px solid #fc00ff;
+}
+
+.forgotPw {
+    display: block;
+    text-align: right;
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.loginBtn {
+    margin-top: 20px;
+    height: 45px;
+    border: none;
+    border-radius: 25px;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    background: linear-gradient(to right, #00dbde, #fc00ff);
+    transition: opacity 0.3s;
+}
+
+.loginBtn:hover {
+    opacity: 0.9;
+}
+
+.socialSection {
+    margin-top: 40px;
+}
+
+.socialSection p, .footerLink p {
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 15px;
+}
+
+.socialIcons {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.fb { background-color: #3b5998; }
+.tw { background-color: #1da1f2; }
+.gp { background-color: #ea4335; }
+
+.footerLink {
+    margin-top: 80px;
+}
+
+.footerLink a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    font-size: 0.9rem;
+}

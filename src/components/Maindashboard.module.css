@@ -1,0 +1,317 @@
+.dashboardheader h1,#userprofile p{
+    color: #7D1D3F;
+}
+.analyticscard,
+.analyticscard p,
+.analyticscard h1,
+.tableheader p,.tableheader p span,.tableheader h2,.tablecontainer,
+.tableheader,
+.tablefooter,
+.tablefooter h3{
+    background-color: #00072D;
+}
+.analyticscard p,
+.tableheader p,.tableheader p span,.tableheader h2,
+.tablefooter h3,
+.tablefooter button{
+    color: #8EDCE6;
+}
+
+
+
+.mainDashboard{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 20px;
+    padding: 20px;
+}
+.dashboardnav{
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    justify-content: space-between;
+    column-gap: 20px;
+    padding: 10px;
+    
+}
+.dashboardnav h1::before{
+    content: 'Presicion Analytics';
+    font-size: 25px;
+    font-weight: 500;
+    color: #8EDCE6;
+}
+.dashboardnav div{
+    display: flex;
+    flex-direction: row;
+    column-gap: 20px;
+}
+#searchbar input{
+    width: 600px;
+    height: 30px;
+    padding: 20px;
+    border-radius: 25px;
+    border: 1px solid rgb(85, 89, 112);
+    /* background-color: transparent; */
+    font-size: medium;
+    background-color: white;
+}
+#userprofile{
+    display: flex;
+    flex-direction: row;
+    /* row-gap: 5px; */
+}
+#userinfodiv
+{
+    display: flex;
+    flex-direction: column;
+    row-gap: 5px;
+}
+#userprofileimg{
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    background-color: rgb(240, 136, 0);
+    /* color: white; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+#userprofileimg img{
+    width: 30px;
+    height: 30px;
+}
+#userprofile p{
+    text-align: center;
+    /* color: red; */
+    font-size: small;
+    font-variant: small-caps;
+}
+
+.dashboardcontent{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    width: 80vw;
+    justify-content: space-between;
+    row-gap: 20px;
+    padding: 20px;
+    border-radius: 20px;
+    /* border: 1px solid red; */
+}
+.dashboardheader{
+    background-color: white;
+   display: flex;
+   flex-direction: row;
+    justify-content: space-between;
+    font-variant: small-caps;
+    
+}
+.dashboardheader div {
+    background-color: white;
+}
+.dashboardheader div p{
+    background-color: white;
+    color: rgb(55, 146, 191);
+    font-weight: 700;
+    font-size:large;
+}
+.dashboardheader h1{
+    background-color: white;
+    text-transform: uppercase;
+}
+#dashboardheaderbtn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#dashboardheaderbtn button{
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid rgb(194, 194, 194);
+    background-color: transparent;
+    color: rgb(19, 18, 18);
+    font-size: medium;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-right: 20px;
+}
+.dashboardanalytics{
+    background-color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    column-gap: 20px;
+    padding: 20px;
+    /* border: 1px solid rgba(194, 194, 194, 0.5);
+    box-shadow: 1px 1px 15px rgb(194, 194, 194); */
+}
+
+.analyticscard{
+    
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 20px;
+    border: 1px solid rgba(194, 194, 194, 0.5);
+    box-shadow: 1px 1px 15px rgb(53, 53, 53);
+    border-radius: 30px;
+    /* background-color: white; */
+}
+.analyticscard p{
+    /* background-color: white; */
+    text-transform: uppercase;
+    font-size: large;
+    /* color: #D7D9B1; */
+}
+.analyticscard h1{
+    /* background-color: white; */
+    color: white;
+}
+#analyticsicon{
+    width: 50px;
+    height: 50px;
+    border-radius: 25px;
+    background-color: rgb(220, 223, 252);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#analyticsicon img{
+    width: 35px;
+    height: 35px;
+
+}
+
+.tablecontainer{
+    /* background-color: white; */
+    display: flex;
+    flex-direction: column;
+    row-gap: 20px;
+    padding: 10px;
+    border: 1px solid rgba(194, 194, 194, 0.5);
+    box-shadow: 1px 1px 15px #7D1D3F;
+    height: 400px;
+    border-radius: 25px;
+}
+.tableheader{
+    /* background-color: white; */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height:10%;
+}
+.tableheader p,.tableheader p span,.tableheader h2{
+    /* background-color: white; */
+    text-transform: uppercase;
+}
+.tablecontainerdata{
+    height: 90%;
+    overflow: auto;
+    background-color: white;
+    border-radius: 20px;
+}
+.tabledata{
+    width: 100%;
+    height: 100%;
+    border-collapse: collapse;
+    background-color: white;
+}
+
+.tabledata thead{
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.tabledata thead tr th{
+    background-color: rgb(255, 255, 255);
+    color: rgb(55, 146, 191);
+    font-weight: 700;
+    font-size:large;
+}
+.tabledata th,
+.tabledata td {
+  text-align: center;
+  height: 44px;
+  padding: 0 10px;
+  font-size: 0.78rem;
+  white-space: nowrap;
+  background-color: white;
+}
+.tablefooter{
+    height: 5%;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    column-gap: 20px;
+    /* background-color: white; */
+}
+.tablefooter button{
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: none;
+    background-color: transparent;
+    /* color: rgb(19, 18, 18); */
+    font-size: medium;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+.tablefooter button:hover{
+    color:#ff0000;
+}
+
+
+
+@media (min-width: 300px) and (max-width: 500px){
+    .dashboardnav{
+    display: flex;
+    flex-direction: column;
+    width: 100vw;
+    justify-content: space-between;
+    row-gap: 20px;
+    padding: 10px;
+    }
+    .dashboardnav h1::before{
+    content: '';
+    }
+    #userprofile{
+        flex-direction: row;
+        justify-content: center;
+    }
+    .dashboardheader{
+        flex-direction: column;
+        row-gap: 20px;
+    }
+    .dashboardheader h1{
+        font-size: x-large;
+    }
+    #dashboardheaderbtn{
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+}
+@media (min-width: 501px) and (max-width: 1350px){
+    .dashboardnav{
+    display: flex;
+    flex-direction: row;
+    width: 100vw;
+    justify-content: space-between;
+    row-gap: 20px;
+    padding: 10px;
+    }
+    .dashboardnav h1::before{
+    content: 'Analytics';
+    }
+    #userprofile{
+        flex-direction: row;
+        justify-content: center;
+    }
+    
+}
