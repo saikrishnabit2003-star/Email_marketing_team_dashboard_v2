@@ -6,7 +6,7 @@ import { useState, useEffect } from 'react';
 import amounticon from "../assets/amounticon.png";
 import amounticon2 from "../assets/amount2.png";
 
-export function UserPage({ searchTerm }){
+export function UserPage({ searchTerm }) {
 
     const [totalamount, settotalamount] = useState(0)
     const [totalUsdAmount, setTotalUsdAmount] = useState(0)

@@ -195,6 +195,8 @@ export function Tablepage({ searchTerm }) {
             currency: ['USD', 'INR', 'CHINA']
         };
 
+        const textareaFields = ['title', 'remarks', 'client_affiliations'];
+
         return (
             <td onDoubleClick={() => handleDoubleClick(rowIndex, fieldName, row[fieldName])}>
                 {isEditing ? (
@@ -225,6 +227,23 @@ export function Tablepage({ searchTerm }) {
                                 <option key={opt} value={opt}>{opt}</option>
                             ))}
                         </select>
+                    ) : textareaFields.includes(fieldName) ? (
+                        <textarea
+                            value={editValue}
+                            onChange={(e) => setEditValue(e.target.value)}
+                            onBlur={handleBlur}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter' && !e.shiftKey) {
+                                    e.preventDefault();
+                                    saveChanges();
+                                } else if (e.key === 'Escape') {
+                                    setEditingCell(null);
+                                }
+                            }}
+                            autoFocus
+                            className={Style.editInput}
+                            style={{ resize: 'vertical', minHeight: '80px', width: '250px', whiteSpace: 'pre-wrap', textAlign: 'left' }}
+                        />
                     ) : (
                         <input
                             type="text"
@@ -236,6 +255,10 @@ export function Tablepage({ searchTerm }) {
                             className={Style.editInput}
                         />
                     )
+                ) : textareaFields.includes(fieldName) ? (
+                    <div className={Style.scrollableCellContent}>
+                        {displayValue || row[fieldName] || 'N/A'}
+                    </div>
                 ) : (
                     displayValue || row[fieldName] || 'N/A'
                 )}
@@ -258,6 +281,7 @@ export function Tablepage({ searchTerm }) {
                 <div className={Style.tableheader}>
                     <h2>Overall Table</h2>
                     <p>displaying <span>{currentData.length}</span> of {filteredData.length} records</p>
+                    <button className={Style.exportBtn}>Export</button>
                 </div>
                 {/* table data */}
                 <div className={Style.tablecontainerdata}>

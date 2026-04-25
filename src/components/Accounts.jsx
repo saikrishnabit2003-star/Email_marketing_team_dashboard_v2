@@ -233,7 +233,7 @@ export function Accounts({ searchTerm }) {
                 branch: formValues.branch,
                 role:"employee"
             };
-        } else if (popupType === 'admin') {
+        } else if (popupType === 'manager' || popupType === 'admin') {
             endpoint = 'https://email-marketing-dashboard-v1.vercel.app/managers';
             payload = {
                 full_name: formValues.name,

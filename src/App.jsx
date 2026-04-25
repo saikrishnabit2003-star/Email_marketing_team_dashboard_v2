@@ -13,6 +13,7 @@ import Profilepage from './components/Profilepage';
 import MagentaLogo from './assets/Magenta data visualisation on monitor.png';
 import Faceicon from './assets/faceicon.png';
 import DownArrowIcon from './assets/downarrow.png';
+import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 // Dashboard layout: sidebar + header + the routed page content
 function DashboardLayout() {
   const [showDropdown, setShowDropdown] = useState(false);
@@ -21,62 +22,81 @@ function DashboardLayout() {
     setShowDropdown(!showDropdown);
   };
   const navigate = useNavigate();
-  const [username,setusername]=useState("User name")
-    useEffect(() => {
-         
-          const token = localStorage.getItem('token');
-          console.log(token)
-          if (token) {
-              fetch("https://email-marketing-dashboard-v1.vercel.app/users/me/details", {
-                  method: "GET",
-                  headers: {
-                      "Authorization": `Bearer ${token}`
-                  }
-              })
-                  .then(response => response.json())
-                  .then(data => {
-                      setusername(data?.data.full_name)
-                      if (data?.data.role) {
-                          localStorage.setItem('user_role', data.data.role);
-                      }
-                  })
-                  .catch(error => console.error(error));
+  const [username, setusername] = useState("User name")
+  const [themeColor, setThemeColor] = useState(localStorage.getItem('themeColor') || '#0d1b3e');
+
+  useEffect(() => {
+    document.documentElement.style.setProperty('--theme-color', themeColor);
+    localStorage.setItem('themeColor', themeColor);
+  }, [themeColor]);
+
+  useEffect(() => {
+
+    const token = localStorage.getItem('token');
+    console.log(token)
+    if (token) {
+      fetch("https://email-marketing-dashboard-v1.vercel.app/users/me/details", {
+        method: "GET",
+        headers: {
+          "Authorization": `Bearer ${token}`
+        }
+      })
+        .then(response => response.json())
+        .then(data => {
+          setusername(data?.data.full_name)
+          if (data?.data.role) {
+            localStorage.setItem('user_role', data.data.role);
           }
-      }, []);
+        })
+        .catch(error => console.error(error));
+    }
+  }, []);
   return (
     <div className="fullpage">
       <div className="sidebar">
         <div id="navtitle">
           <div>
-            <img src={MagentaLogo} alt="" />
+             <DotLottieReact
+      src="https://lottie.host/903d518c-7432-4619-a861-77f077140680/gkrDPQG92O.lottie"
+      loop
+      autoplay
+    />
           </div>
           <h3>Dashboard</h3>
         </div>
 
         <div id='navBtn'>
-          <NavLink to="/dashboard" style={{textDecoration:"none"}} end>
+          <NavLink to="/dashboard" style={{ textDecoration: "none" }} end>
             <button>Overall Dashboard</button>
           </NavLink>
-          <NavLink to="/table" style={{textDecoration:"none"}}>
+          <NavLink to="/table" style={{ textDecoration: "none" }}>
             <button>Table</button>
           </NavLink>
-          <NavLink to="/accounts" style={{textDecoration:"none"}}>
+          <NavLink to="/accounts" style={{ textDecoration: "none" }}>
             <button>Accounts</button>
           </NavLink>
         </div>
+
+        {/* <div className='navfooter'>
+           <DotLottieReact
+      src="https://lottie.host/bf461d9f-d99a-4c23-b496-f5a915a00e42/xFMNTCu2FH.lottie"
+      loop
+      autoplay
+    />
+        </div> */}
       </div>
 
       <div className="pages">
         <div id='pageheader'>
           <div id='header-search'>
             <span style={{ color: '#ccc', marginRight: '10px' }}>🔍</span>
-            <input 
-              type="search" 
-              placeholder='Search Here' 
+            <input
+              type="search"
+              placeholder='Search Here'
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
-  
+
           </div>
           <div id='userprofile'>
             <img src={Faceicon} alt="profile" />
@@ -85,14 +105,26 @@ function DashboardLayout() {
             {
               showDropdown && (
                 <div className='dropdown'>
-                   <button onClick={() => navigate('/profile')}>My Profile</button>
+                  <div style={{ padding: '10px', display: 'flex', alignItems: 'center', gap: '10px' }}>
+                    <label htmlFor="themePicker" style={{ fontSize: '14px', color: '#666', fontWeight: 'bold' }}>Theme:</label>
+                    <input 
+                      type="color" 
+                      id="themePicker" 
+                      value={themeColor} 
+                      onChange={(e) => setThemeColor(e.target.value)} 
+                      style={{ border: 'none', width: '30px', height: '30px', cursor: 'pointer', padding: 0, background: 'transparent' }} 
+                      title="Change Theme Color"
+                    />
+                  </div>
+                  <hr style={{ border: 'none', borderBottom: '1px solid #eee', margin: '5px 0' }} />
+                  <button onClick={() => navigate('/profile')}>My Profile</button>
 
-                   <button id='logout-btn' onClick={() => {
-                     localStorage.removeItem('token');
-                     localStorage.removeItem('user_role');
-                     navigate('/');
-                   }}>Logout</button>
-                 </div>
+                  <button id='logout-btn' onClick={() => {
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user_role');
+                    navigate('/');
+                  }}>Logout</button>
+                </div>
               )
             }
           </div>

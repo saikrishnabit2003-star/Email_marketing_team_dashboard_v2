@@ -194,7 +194,7 @@
 } */
 .sidebar,
 #navBtn button{
-  background-color: rgb(13, 16, 41);
+  background-color: var(--theme-color, rgb(13, 16, 41));
 }
 
 *{
@@ -325,10 +325,11 @@
 .sidebar {
     width: 250px;
     height: 100vh;
-    background-color: rgb(13, 16, 41); /* Deep dark navy from DeskApp */
+    background-color: var(--theme-color, rgb(13, 16, 41)); /* Deep dark navy from DeskApp */
     color: #ffffff;
     display: flex;
     flex-direction: column;
+   
     position: fixed;
     left: 0;
     top: 0;
@@ -344,10 +345,15 @@
     /* border-bottom: 1px solid rgba(255, 255, 255, 0.05); */
 }
 
-#navtitle img {
+/* #navtitle img {
     width:70px;
     height: auto;
     margin-right: 15px;
+} */
+#navtitle div {
+    width: 100px;
+    height: 100px;
+    /* margin-right: 2px; */
 }
 
 #navtitle h3 {
@@ -363,12 +369,13 @@
     padding: 20px 0;
     display: flex;
     flex-direction: column;
+
 }
 
 /* Individual Buttons */
 #navBtn button {
     background: transparent;
-    border: none;
+    /* border: none; */
     color: white; /* Muted text color for inactive items */
     text-align: left;
     padding: 15px 25px;
@@ -379,6 +386,11 @@
     transition: all 0.3s ease;
     display: flex;
     align-items: center;
+    border-bottom: 1px solid rgb(255, 255, 255);
+    border-top:none;
+    border-right:none;
+    border-left: none;
+    transition: all 0.8s ease;
 }
 
 /* Hover State */
@@ -390,7 +402,7 @@
 #navBtn button.active {
     color: #ffffff;
     background-color: rgba(255, 255, 255, 0.1);
-    border-right: 4px solid #7d2ae8; /* Purple accent from your image */
+    border-right: 4px solid var(--theme-color, #7d2ae8); /* Purple accent from your image */
 }
 
 /* Optional: Add spacing for the icons you'll likely add later */
@@ -408,7 +420,13 @@
     background-color: #edf1f5; /* Subtle grey background */
     overflow: hidden;
 }
+.navfooter{
 
+  margin-top: auto;
+  width: 100%;
+  height: 30%;
+  margin-bottom: 20px;
+}
 /* Header Container */
 #pageheader {
     height: 70px;
@@ -460,7 +478,7 @@
 #header-search button:hover{
   border-top-right-radius: 8px;
   border-bottom-right-radius: 8px;
-  background-color: #7d2ae8;
+  background-color: var(--theme-color, #7d2ae8);
   color: white;
 }
 /* User Profile Section */

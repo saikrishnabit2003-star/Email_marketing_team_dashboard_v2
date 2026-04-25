@@ -15,6 +15,14 @@ const Loginpage2 = () => {
   const [otp, setOtp] = useState("")
   const [loginLoading, setLoginLoading] = useState(false)
   const [otpLoading, setOtpLoading] = useState(false)
+  const [notification, setNotification] = useState({ message: '', type: '', visible: false });
+
+  const showNotification = (message, type) => {
+    setNotification({ message, type, visible: true });
+    setTimeout(() => {
+      setNotification(prev => ({ ...prev, visible: false }));
+    }, 5000);
+  };
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -23,7 +31,7 @@ const Loginpage2 = () => {
       password: password,
     }
     setLoginLoading(true);
-    fetch("https://email-marketing-dashboard-v1.vercel.app/login", {
+    fetch("https://email-marketing-dashboard-v1.onrender.com/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -34,14 +42,23 @@ const Loginpage2 = () => {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        setotpverify(data.data.otp_required)
-        if (data?.status_code === 200 && data?.data.otp_required === false) {
-
-          localStorage.setItem('token', data.data.access_token);
-          navigate('/dashboard');
+        if (data?.status_code === 200) {
+          setotpverify(data.data.otp_required);
+          if (data.data.otp_required === false) {
+            localStorage.setItem('token', data.data.access_token);
+            showNotification("Login successful", "success");
+            setTimeout(() => navigate('/dashboard'), 1000);
+          } else {
+            showNotification("OTP Sent to Email", "success");
+          }
+        } else {
+          showNotification(data.message || "Login failed", "error");
         }
       })
-      .catch(error => console.error(error))
+      .catch(error => {
+        console.error(error);
+        showNotification("Connection error", "error");
+      })
       .finally(() => setLoginLoading(false));
     console.log("request", requestdata);
   };
@@ -54,7 +71,7 @@ const Loginpage2 = () => {
     }
     setOtpLoading(true);
     // Add real auth logic here if needed
-    fetch("https://email-marketing-dashboard-v1.vercel.app/verify-otp", {
+    fetch("https://email-marketing-dashboard-v1.onrender.com/verify-otp", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -64,18 +81,32 @@ const Loginpage2 = () => {
       .then(response => response.json())
       .then(data => {
         console.log(data);
-        setotpverify(data.data.otp_required)
         if (data?.status_code === 200) {
+          setotpverify(data.data.otp_required);
           localStorage.setItem('token', data.data.access_token);
-          navigate('/dashboard');
+          showNotification("Verification successful", "success");
+          setTimeout(() => navigate('/dashboard'), 1000);
+        } else {
+          showNotification(data.message || "Invalid OTP", "error");
         }
       })
-      .catch(error => console.error(error))
+      .catch(error => {
+        console.error(error);
+        showNotification("Connection error", "error");
+      })
       .finally(() => setOtpLoading(false));
     console.log("request", requestdata);
   };
   return (
     <div className={Style.loginPage}>
+      {notification.visible && (
+        <div className={`${Style.notification} ${Style[notification.type]}`}>
+          <div className={Style.notificationIcon}>
+            {notification.type === 'success' ? '✓' : '✕'}
+          </div>
+          <p>{notification.message}</p>
+        </div>
+      )}
       <div id={Style.logincontainer}>
 
         <div className={Style.gifcontainer}>
