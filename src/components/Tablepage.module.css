@@ -131,8 +131,8 @@
 }
 
 .tablecontainerdata::-webkit-scrollbar {
-  width: 0px; /* Hide vertical scrollbar */
-  height: 6px; /* Keep horizontal scrollbar */
+  width: 5px; /* Hide vertical scrollbar */
+  height: 4px; /* Keep horizontal scrollbar */
 }
 
 .tablecontainerdata::-webkit-scrollbar-track {
@@ -360,7 +360,7 @@
 }
 
 .scrollableCellContent::-webkit-scrollbar {
-  width: 4px;
+  width: 2px;
 }
 .scrollableCellContent::-webkit-scrollbar-thumb {
   background: var(--border);

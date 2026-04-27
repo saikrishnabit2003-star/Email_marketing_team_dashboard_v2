@@ -203,10 +203,11 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--text-muted);
+  color: var(--navy);
   text-align: left;
   white-space: nowrap;
   background: var(--card);
+  
 }
 
 /* ─── Table body rows ───────────────────────────────────────── */
@@ -237,7 +238,7 @@
 .subcontainer2 table tbody tr :nth-child(1) {
   width: 60px;
   text-align: center;
-  color: var(--text-muted);
+  /* color: var(--text-muted); */
   font-weight: 500;
 }
 
@@ -254,9 +255,11 @@
 
 .subcontainer2 table thead tr :nth-child(4),
 .subcontainer2 table tbody tr :nth-child(4) { width: 100px; }
-
+.subcontainer2 table thead tr :nth-child(5){
+  text-align: center;
+}
 .subcontainer2 table thead tr :nth-child(5),
-.subcontainer2 table tbody tr :nth-child(5) { width: 200px; }
+.subcontainer2 table tbody tr :nth-child(5) { width: 200px; overflow-wrap: anywhere; }
 
 .subcontainer2 table thead tr :nth-child(6),
 .subcontainer2 table tbody tr :nth-child(6) { width: 140px; }
@@ -292,7 +295,7 @@
 .tablecontainer2 table tbody tr :nth-child(1) {
   width: 60px;
   text-align: center;
-  color: var(--text-muted);
+  /* color: var(--text-muted); */
   font-weight: 500;
 }
 
