@@ -17,6 +17,7 @@ import { DotLottieReact } from '@lottiefiles/dotlottie-react';
 // Dashboard layout: sidebar + header + the routed page content
 function DashboardLayout() {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const handleDropdown = () => {
     setShowDropdown(!showDropdown);
@@ -27,6 +28,8 @@ function DashboardLayout() {
 
   useEffect(() => {
     document.documentElement.style.setProperty('--theme-color', themeColor);
+    document.documentElement.style.setProperty('--navy', themeColor);
+    document.documentElement.style.setProperty('--navy-mid', themeColor);
     localStorage.setItem('themeColor', themeColor);
   }, [themeColor]);
 
@@ -53,7 +56,7 @@ function DashboardLayout() {
   }, []);
   return (
     <div className="fullpage">
-      <div className="sidebar">
+      <div className={`sidebar ${isSidebarOpen ? 'active' : ''}`}>
         <div id="navtitle">
           <div>
              <DotLottieReact
@@ -63,16 +66,17 @@ function DashboardLayout() {
     />
           </div>
           <h3>Dashboard</h3>
+          <button id='sidebar-close-btn' onClick={() => setIsSidebarOpen(false)}>✕</button>
         </div>
 
         <div id='navBtn'>
-          <NavLink to="/dashboard" style={{ textDecoration: "none" }} end>
+          <NavLink to="/dashboard" style={{ textDecoration: "none" }} onClick={() => setIsSidebarOpen(false)} end>
             <button>Overall Dashboard</button>
           </NavLink>
-          <NavLink to="/table" style={{ textDecoration: "none" }}>
+          <NavLink to="/table" style={{ textDecoration: "none" }} onClick={() => setIsSidebarOpen(false)}>
             <button>Table</button>
           </NavLink>
-          <NavLink to="/accounts" style={{ textDecoration: "none" }}>
+          <NavLink to="/accounts" style={{ textDecoration: "none" }} onClick={() => setIsSidebarOpen(false)}>
             <button>Accounts</button>
           </NavLink>
         </div>
@@ -88,6 +92,7 @@ function DashboardLayout() {
 
       <div className="pages">
         <div id='pageheader'>
+          <button id='mobile-toggle' onClick={() => setIsSidebarOpen(!isSidebarOpen)}>⋮</button>
           <div id='header-search'>
             <span style={{ color: '#ccc', marginRight: '10px' }}>🔍</span>
             <input

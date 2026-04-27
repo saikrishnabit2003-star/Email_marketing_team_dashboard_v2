@@ -80,9 +80,14 @@ export function Tablepage({ searchTerm }) {
 
         // Treat empty string as 0 for amount fields to avoid API errors
         const amountFields = ['writing_amount', 'modification_amount', 'po_amount'];
+        const phasePaymentFields = ['phase_1_payment', 'phase_2_payment', 'phase_3_payment'];
+
         let finalEditValue = editValue;
 
-        if (amountFields.includes(fieldName) && (editValue === '' || editValue === null)) {
+        if (
+            (amountFields.includes(fieldName) || phasePaymentFields.includes(fieldName)) &&
+            (editValue === '' || editValue === null)
+        ) {
             finalEditValue = 0;
         }
 
@@ -107,6 +112,18 @@ export function Tablepage({ searchTerm }) {
 
             updatedTableData[rowIndex].total_amount = newTotal;
             payload.total_amount = newTotal;
+        }
+
+        // Recalculate paid_amount if any phase payment was changed
+        if (phasePaymentFields.includes(fieldName)) {
+            const row = updatedTableData[rowIndex];
+            const phase1 = parseFloat(row.phase_1_payment) || 0;
+            const phase2 = parseFloat(row.phase_2_payment) || 0;
+            const phase3 = parseFloat(row.phase_3_payment) || 0;
+            const newPaid = phase1 + phase2 + phase3;
+
+            updatedTableData[rowIndex].paid_amount = newPaid;
+            payload.paid_amount = newPaid;
         }
 
         setTableData(updatedTableData);
@@ -168,7 +185,7 @@ export function Tablepage({ searchTerm }) {
     }, [searchTerm]);
 
     // Fields that should never be editable inline
-    const READ_ONLY_FIELDS = new Set(['total_amount']);
+    const READ_ONLY_FIELDS = new Set(['total_amount', 'paid_amount']);
 
     const renderCell = (row, rowIndex, fieldName, displayValue) => {
         // Read-only: just show the value, no double-click editing
@@ -192,10 +209,12 @@ export function Tablepage({ searchTerm }) {
             index: ['SCI', 'Scopus', 'SSCI', 'EI', 'Scopus & SCI', 'SCIE'],
             rank: ['Q1', 'Q2', 'Q3', 'Q4', 'Anything', 'Q1 or Q2', 'Q2 or Q3', 'Q3 or Q4'],
             order_type: ['WO/PO', 'MO/PO', 'WO', 'PO', 'MO/RV', 'MO', 'Thesis writing', 'WO/Implementation/PO', 'Review paper writing', 'WO/Conference', 'Improvement'],
-            currency: ['USD', 'INR', 'CHINA']
+            currency: ['USD', 'INR', 'CHINA'],
+            order_status: ['Active', 'Inactive']
         };
 
         const textareaFields = ['title', 'remarks', 'client_affiliations'];
+        const linkFields = ['client_drive_link', 'client_details'];
 
         return (
             <td onDoubleClick={() => handleDoubleClick(rowIndex, fieldName, row[fieldName])}>
@@ -259,6 +278,10 @@ export function Tablepage({ searchTerm }) {
                     <div className={Style.scrollableCellContent}>
                         {displayValue || row[fieldName] || 'N/A'}
                     </div>
+                ) : linkFields.includes(fieldName) ? (
+                    row[fieldName] ? (
+                        <a href={row[fieldName]} target="_blank" rel="noopener noreferrer" className={Style.viewLink}>view</a>
+                    ) : ''
                 ) : (
                     displayValue || row[fieldName] || 'N/A'
                 )}
@@ -314,18 +337,21 @@ export function Tablepage({ searchTerm }) {
                                 <th>po end date</th>
                                 <th>phase 1 payment</th>
                                 <th>phase 1 payment date</th>
+                                <th>phase 1 payment reason</th>
                                 <th>phase 2 payment</th>
                                 <th>phase 2 payment date</th>
+                                <th>phase 2 payment reason</th>
                                 <th>phase 3 payment</th>
                                 <th>phase 3 payment date</th>
+                                <th>phase 3 payment reason</th>
                                 <th>Total Paid Amount</th>
                                 <th>payment status</th>
                                 <th>bank account</th>
                                 <th>client affiliations</th>
                                 <th>remarks</th>
-                                
                                 <th>Client Drive</th>
                                 <th>Client Details</th>
+                                <th>Record Status</th>
                             </tr>
                         </thead>
 
@@ -361,25 +387,21 @@ export function Tablepage({ searchTerm }) {
                                         {renderCell(row, actualIndex, 'po_end_date', formatDate(row.po_end_date))}
                                         {renderCell(row, actualIndex, 'phase_1_payment')}
                                         {renderCell(row, actualIndex, 'phase_1_payment_date', formatDate(row.phase_1_payment_date))}
-                                        {renderCell(row, actualIndex, 'phase_2_payment', row.phase_2_payment)}
+                                        {renderCell(row, actualIndex, 'phase_1_payment_details')}
+                                        {renderCell(row, actualIndex, 'phase_2_payment')}
                                         {renderCell(row, actualIndex, 'phase_2_payment_date', formatDate(row.phase_2_payment_date))}
-                                        {renderCell(row, actualIndex, 'phase_3_payment', row.phase_3_payment)}
+                                        {renderCell(row, actualIndex, 'phase_2_payment_details')}
+                                        {renderCell(row, actualIndex, 'phase_3_payment')}
                                         {renderCell(row, actualIndex, 'phase_3_payment_date', formatDate(row.phase_3_payment_date))}
-                                        <td>{(parseFloat(row.phase_1_payment) || 0) + (parseFloat(row.phase_2_payment) || 0) + (parseFloat(row.phase_3_payment) || 0)}</td>
+                                        {renderCell(row, actualIndex, 'phase_3_payment_details')}
+                                        {renderCell(row, actualIndex, 'paid_amount')}
                                         {renderCell(row, actualIndex, 'payment_status')}
                                         {renderCell(row, actualIndex, 'bank_account')}
                                         {renderCell(row, actualIndex, 'client_affiliations')}
                                         {renderCell(row, actualIndex, 'remarks')}
-                                        <td>
-                                            {row.client_drive_link ? (
-                                                <a href={row.client_drive_link} target="_blank" rel="noopener noreferrer" className={Style.viewLink}>view</a>
-                                            ) : ''}
-                                        </td>
-                                        <td>
-                                            {row.client_details ? (
-                                                <a href={row.client_details} target="_blank" rel="noopener noreferrer" className={Style.viewLink}>view</a>
-                                            ) : ''}
-                                        </td>
+                                        {renderCell(row, actualIndex, 'client_drive_link')}
+                                        {renderCell(row, actualIndex, 'client_details')}
+                                        {renderCell(row, actualIndex, 'order_status')}
                                     </tr>
                                 );
                             })}

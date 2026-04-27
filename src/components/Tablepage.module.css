@@ -93,7 +93,7 @@
 
 .tableheader p span {
   font-weight: 600;
-  color: var(--text-secondary);
+  color: var(--red);
 }
 
 /* ─── Export button ─────────────────────────────────────────── */
@@ -337,7 +337,8 @@
 
 .tabledata td:nth-child(10),
 .tabledata td:nth-child(33),
-.tabledata td:nth-child(34) {
+.tabledata td:nth-child(34),
+.tabledata td:nth-child(35) {
   white-space: pre-wrap;
   width: 280px;
   overflow-wrap: break-word;
@@ -351,6 +352,11 @@
   overflow-y: auto;
   scrollbar-width: thin;
   padding-right: 4px;
+  white-space: pre-wrap;
+  overflow-wrap: break-word;
+  word-break: break-word;
+  line-height: 1.5;
+  text-align: left;
 }
 
 .scrollableCellContent::-webkit-scrollbar {
@@ -367,7 +373,7 @@
 .tabledata td:nth-child(12),
 .tabledata th:nth-child(13),
 .tabledata td:nth-child(13) {
-  width: 100px;
+  width: 150px;
   text-align: center;
 }
 

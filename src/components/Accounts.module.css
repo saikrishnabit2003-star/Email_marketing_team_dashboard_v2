@@ -6,8 +6,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
 
 /* ─── Variables ─────────────────────────────────────────────── */
-:global(:root) {
-  --navy:          var(--theme-color, #13112a);
+:root {
+  --navy:          #13112a;
   --accent:        #e8366f;
   --accent-soft:   rgba(232, 54, 111, 0.1);
   --blue:          #4a7cf7;
@@ -203,10 +203,10 @@
   font-weight: 700;
   text-transform: uppercase;
   letter-spacing: 0.07em;
-  color: var(--card);
+  color: var(--text-muted);
   text-align: left;
   white-space: nowrap;
-  background-color: var(--navy);
+  background: var(--card);
 }
 
 /* ─── Table body rows ───────────────────────────────────────── */
@@ -230,7 +230,6 @@
   max-width: 220px;
   overflow: hidden;
   text-overflow: ellipsis;
-  height: 20px;
 }
 
 /* ─── Column widths — Client table ─────────────────────────── */
@@ -238,7 +237,7 @@
 .subcontainer2 table tbody tr :nth-child(1) {
   width: 60px;
   text-align: center;
-  /* color: var(--text-muted); */
+  color: var(--text-muted);
   font-weight: 500;
 }
 
@@ -284,7 +283,7 @@
   text-align: center;
 }
 .subcontainer2 table thead tr :nth-child(10) {
-  width: 50px;
+  width: 80px;
   text-align: center;
 }
 
@@ -384,8 +383,28 @@
   width: 100%;
 }
 
+/* formContainer fills full column height */
+.formcontainer1 > .formContainer {
+  height: 100%;
+}
+
 @media (max-width: 900px) {
   .formcontainer1 { grid-template-columns: 1fr; }
+}
+
+/* ── 2-col variant for Employee/Admin (fewer fields) ─── */
+.formcontainer2col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: start;
+  width: 100%;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+@media (max-width: 600px) {
+  .formcontainer2col { grid-template-columns: 1fr; }
 }
 
 .formContainer {

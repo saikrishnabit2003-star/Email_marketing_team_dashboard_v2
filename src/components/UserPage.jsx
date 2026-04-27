@@ -107,7 +107,7 @@ export function UserPage({ searchTerm }) {
 
                     // Overall analysis can be calculated here or reactively. 
                     // Let's keep it here for simplicity since it's "static" overall data.
-                    const overallAmt = clients.reduce((s, c) => s + (c.total_amount || 0), 0);
+                    const overallAmt = clients.reduce((s, c) => s + (c.paid_amount || 0), 0);
                     const totalClt = clients.length;
                     const pendingClt = clients.filter(c => c.payment_status === "Pending" || c.payment_status === "Not yet").length;
                     const partialClt = clients.filter(c => c.payment_status === "Partial").length;
@@ -130,9 +130,9 @@ export function UserPage({ searchTerm }) {
                     const countryData = Object.entries(countrySplit).map(([name, value]) => ({ name, value }));
                     setRawData(countryData);
 
-                    // Convert all country_split amounts to USD and set total
-                    const usdTotal = convertCountrySplitToUSD(countrySplit);
-                    setTotalUsdAmount(usdTotal);
+                    // // Convert all country_split amounts to USD and set total
+                    // const usdTotal = convertCountrySplitToUSD(countrySplit);
+                    // setTotalUsdAmount(usdTotal);
                 })
                 .catch(error => console.error(error));
         }
