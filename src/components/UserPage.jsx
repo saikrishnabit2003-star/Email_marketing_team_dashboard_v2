@@ -172,7 +172,7 @@ export function UserPage({ searchTerm }) {
         }
 
         // Calculate stats for the filtered list
-        const mAmount = filteredList.reduce((s, c) => s + (c.total_amount || 0), 0);
+        const mAmount = filteredList.reduce((s, c) => s + (c.paid_amount || 0), 0);
         const mTotal = filteredList.length;
         const mPendingCount = filteredList.filter(c => c.payment_status === "Pending" || c.payment_status === "Partial" || c.payment_status === "Not Yet").length;
         const mRejCount = filteredList.filter(c => c.payment_status === "Partial").length;
