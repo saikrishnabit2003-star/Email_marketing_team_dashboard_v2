@@ -207,7 +207,6 @@
   text-align: left;
   white-space: nowrap;
   background: var(--card);
-  
 }
 
 /* ─── Table body rows ───────────────────────────────────────── */
@@ -215,6 +214,12 @@
 .tablecontainer2 table tbody tr {
   border-bottom: 1px solid var(--border-light);
   transition: background var(--transition);
+  cursor: default;
+}
+
+.subcontainer2 table tbody tr:hover,
+.tablecontainer2 table tbody tr:hover {
+  background-color: #f8f9fa;
 }
 
 .subcontainer2 table tbody tr:last-child,
@@ -312,7 +317,28 @@
 .tablecontainer2 table tbody tr :nth-child(5) { width: 150px; }
 
 .tablecontainer2 table thead tr :nth-child(6),
-.tablecontainer2 table tbody tr :nth-child(6) { width: 140px; }
+.tablecontainer2 table tbody tr :nth-child(6) { 
+  width: 160px; 
+  white-space: pre-line;
+  line-height: 1.4;
+  overflow: visible;
+  text-overflow: unset;
+}
+
+.tablecontainer2 table thead tr :nth-child(7),
+.tablecontainer2 table tbody tr :nth-child(7) { width: 140px; }
+
+/* Name column - accent color */
+.tablecontainer2 table tbody tr :nth-child(2) {
+  color: var(--accent);
+  font-weight: 600;
+}
+
+/* Email column - blue color */
+.tablecontainer2 table tbody tr :nth-child(3) {
+  color: var(--blue);
+  font-weight: 500;
+}
 
 /* ─── N/A muted styling ─────────────────────────────────────── */
 .subcontainer2 table tbody tr td:empty::after,

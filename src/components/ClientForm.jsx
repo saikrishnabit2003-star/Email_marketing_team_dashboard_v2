@@ -258,8 +258,8 @@ export function ClientForm({ formValues, handleChange, profile_names, client_han
                     >
                        <option value="" disabled>Choose curreny</option>
                         <option value="INR">INR</option>
-                        <option value="Q2">USD</option>
-                        <option value="Q3">CHINA</option>
+                        <option value="USD">USD</option>
+                        {/* <option value="CHINA">CHINA</option> */}
                     </select>
                 </fieldset>
                 

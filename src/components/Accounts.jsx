@@ -34,7 +34,8 @@ export function Accounts({ searchTerm }) {
         orders: "",
         name: "",
         password: "",
-        branch: ""
+        branch: "",
+        profile_name: "",
     });
 
     const [sampleData, setSampleData] = useState([]);
@@ -226,21 +227,22 @@ export function Accounts({ searchTerm }) {
         } else if (popupType === 'employee') {
             endpoint = 'https://email-marketing-dashboard-v1.vercel.app/users';
             payload = {
-                full_name: formValues.name,
+                full_name: formValues.name.toUpperCase(),
                 email: formValues.email,
                 password: formValues.password,
                 phone_number: formValues.whatsapp,
-                branch: formValues.branch,
+                branch: formValues.branch.toUpperCase(),
+                profile_names: formValues.profile_name ? formValues.profile_name.split(',').map(s => s.trim().toUpperCase()).filter(s => s !== "") : [],
                 role:"employee"
             };
         } else if (popupType === 'manager' || popupType === 'admin') {
             endpoint = 'https://email-marketing-dashboard-v1.vercel.app/managers';
             payload = {
-                full_name: formValues.name,
+                full_name: formValues.name.toUpperCase(),
                 email: formValues.email,
                 password: formValues.password,
                 phone_number: formValues.whatsapp,
-                branch: formValues.branch,
+                branch: formValues.branch.toUpperCase(),
                 role:"manager"
             };
         }
@@ -345,14 +347,14 @@ export function Accounts({ searchTerm }) {
                             </thead>
                              <tbody>
                                 {loading ? (
-                                    <tr><td colSpan={11} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
+                                    <tr><td colSpan={10} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
                                 ) : sampleData.filter(client => {
                                     if (!searchTerm) return true;
                                     return Object.values(client).some(val => 
                                         String(val).toLowerCase().includes(searchTerm.toLowerCase())
                                     );
                                 }).length === 0 ? (
-                                    <tr><td colSpan={11} style={{ textAlign: 'center', padding: '16px' }}>No clients found.</td></tr>
+                                    <tr><td colSpan={10} style={{ textAlign: 'center', padding: '16px' }}>No clients found.</td></tr>
                                 ) : sampleData
                                     .filter(client => {
                                         if (!searchTerm) return true;
@@ -361,9 +363,7 @@ export function Accounts({ searchTerm }) {
                                         );
                                     })
                                     .map((client, index) => (
-                                    <tr key={client._id || client.client_id} style={{ transition: 'background 0.2s' }} 
-                                        onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f1f1f1'}
-                                        onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}>
+                                    <tr key={client._id || client.client_id}>
                                     <td>{index + 1}</td>
                                     <td>{client.client_id || 'N/A'}</td>
                                     <td>{client.name || 'N/A'}</td>
@@ -402,19 +402,20 @@ export function Accounts({ searchTerm }) {
                                     <th>Email</th>
                                     <th>Password</th>
                                     <th>Whatsapp</th>
+                                    <th>Profile Holder</th>
                                     <th>Branch</th>
                                 </tr>
                             </thead>
                              <tbody>
                             {empLoading ? (
-                                <tr><td colSpan={6} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
+                                <tr><td colSpan={7} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
                             ) : empData.filter(e => {
                                 if (!searchTerm) return true;
                                 return Object.values(e).some(val => 
                                     String(val).toLowerCase().includes(searchTerm.toLowerCase())
                                 );
                             }).length === 0 ? (
-                                <tr><td colSpan={6} style={{ textAlign: 'center', padding: '16px' }}>No employees found.</td></tr>
+                                <tr><td colSpan={7} style={{ textAlign: 'center', padding: '16px' }}>No employees found.</td></tr>
                             ) : empData
                                 .filter(e => {
                                     if (!searchTerm) return true;
@@ -423,14 +424,13 @@ export function Accounts({ searchTerm }) {
                                     );
                                 })
                                 .map((e, index) => (
-                               <tr key={e._id || index} style={{ transition: 'background 0.2s' }} 
-                                        onMouseOver={(ev) => ev.currentTarget.style.backgroundColor = '#f1f1f1'}
-                                        onMouseOut={(ev) => ev.currentTarget.style.backgroundColor = 'transparent'}>
+                                <tr key={e._id || index}>
                                     <td>{index + 1}</td>
                                     <td>{e.full_name || 'N/A'}</td>
                                     <td>{e.email || 'N/A'}</td>
                                     <td>{e.password || 'N/A'}</td>
                                     <td>{e.phone_number || 'N/A'}</td>
+                                    <td>{Array.isArray(e.profile_names) ? e.profile_names.join(',\n') || 'N/A' : e.profile_names || 'N/A'}</td>
                                     <td>{e.branch || 'N/A'}</td>
                                 </tr>
                             ))}

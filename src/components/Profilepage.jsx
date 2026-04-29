@@ -10,6 +10,10 @@ const Profilepage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [passwordData, setPasswordData] = useState({ new: '', confirm: '' });
     const [notification, setNotification] = useState({ message: '', type: '', visible: false });
+    
+    // New states for profile names
+    const [newProfileName, setNewProfileName] = useState('');
+    const [isAppending, setIsAppending] = useState(false);
 
     const showNotification = (message, type) => {
         setNotification({ message, type, visible: true });
@@ -18,9 +22,10 @@ const Profilepage = () => {
         }, 5000);
     };
 
-    useEffect(() => {
+    const fetchUserDetails = () => {
         const token = localStorage.getItem('token');
         if (token) {
+            setLoading(true);
             fetch("https://email-marketing-dashboard-v1.vercel.app/users/me/details", {
                 method: "GET",
                 headers: {
@@ -39,7 +44,50 @@ const Profilepage = () => {
         } else {
             setLoading(false);
         }
+    };
+
+    useEffect(() => {
+        fetchUserDetails();
     }, []);
+
+    const handleAppendProfile = async (e) => {
+        e.preventDefault();
+        if (!newProfileName.trim()) {
+            showNotification("Please enter a profile name", "error");
+            return;
+        }
+
+        const token = localStorage.getItem('token');
+        setIsAppending(true);
+
+        try {
+            const response = await fetch("https://email-marketing-dashboard-v1.vercel.app/users/profiles/append", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({
+                    email: userData.email,
+                    profile_name: newProfileName.trim().toUpperCase()
+                })
+            });
+
+            if (response.ok) {
+                showNotification("Profile appended successfully", "success");
+                setNewProfileName('');
+                fetchUserDetails(); // Refresh data
+            } else {
+                const errorData = await response.json();
+                showNotification(errorData.message || "Failed to append profile", "error");
+            }
+        } catch (error) {
+            console.error("Error appending profile:", error);
+            showNotification("Error connecting to server", "error");
+        } finally {
+            setIsAppending(false);
+        }
+    };
     
 
     const handleChangePassword = async (e) => {
@@ -97,7 +145,7 @@ const Profilepage = () => {
     //     );
     // }
 
-    const { full_name, email, role, phone_number, branch } = userData || {};
+    const { full_name, email, role, phone_number, branch, profile_names } = userData || {};
 
     return (
         <div className={styles.profilePage}>
@@ -109,52 +157,99 @@ const Profilepage = () => {
                     <p>{notification.message}</p>
                 </div>
             )}
-            <div className={styles.profileCard}>
-                <div className={styles.avatarSection}>
-                    <div className={styles.avatar}>
-                        {full_name ? full_name.charAt(0).toUpperCase() : 'U'}
-                    </div>
-                    <div className={styles.roleBadge}>{role || 'Employee'}</div>
-                </div>
 
-                <h2 className={styles.userName}>{full_name || 'User Name'}</h2>
-                <p className={styles.userSubtitle}>{email || 'email@example.com'}</p>
-
-                <div className={styles.detailsGrid}>
-                    <div className={styles.detailItem}>
-                        <p className={styles.detailLabel}>Email Address</p>
-                        <p className={styles.detailValue}>{email || 'N/A'}</p>
-                    </div>
-                    <div className={styles.detailItem}>
-                        <p className={styles.detailLabel}>Phone Number</p>
-                        <p className={styles.detailValue}>{phone_number || 'N/A'}</p>
-                    </div>
-                    <div className={styles.detailItem}>
-                        <p className={styles.detailLabel}>Branch</p>
-                        <p className={styles.detailValue}>{branch || 'N/A'}</p>
-                    </div>
-                    {/* <div className={styles.detailItem}>
-                        <p className={styles.detailLabel}>Account Role</p>
-                        <p className={styles.detailValue}>{role || 'N/A'}</p>
-                    </div> */}
-                    <div className={styles.detailItem}>
-                        <div className={styles.passwordHeader}>
-                            <p className={styles.detailLabel}>Password</p>
-                            <button 
-                                className={styles.toggleBtn} 
-                                onClick={() => setShowPassword(!showPassword)}
-                            >
-                                <img src={showPassword ? closeeye : openeye} alt="Toggle" />
-                            </button>
+            <div className={styles.profileContainer}>
+                {/* Left Sidebar - Identity */}
+                <div className={styles.sidebar}>
+                    <div className={styles.avatarSection}>
+                        <div className={styles.avatar}>
+                            {full_name ? full_name.charAt(0).toUpperCase() : 'U'}
                         </div>
-                        <p className={styles.detailValue}>
-                            {showPassword ? (userData.password || "••••••••") : "••••••••"}
-                        </p>
+                        <div className={styles.roleBadge}>{role || 'Employee'}</div>
+                    </div>
+                    <h2 className={styles.userName}>{full_name || 'User Name'}</h2>
+                    <p className={styles.userSubtitle}>{email || 'email@example.com'}</p>
+                    
+                    <div className={styles.sidebarActions}>
+                        <button className={styles.updatePasswordBtn} onClick={() => setIsModalOpen(true)}>
+                            Update Password
+                        </button>
                     </div>
                 </div>
 
-                <div className={styles.actions}>
-                    <button className={styles.editBtn} onClick={() => setIsModalOpen(true)}>Update Password</button>
+                {/* Right Content - Sections */}
+                <div className={styles.mainContent}>
+                    <div className={styles.section}>
+                        <h3 className={styles.sectionTitle}>Personal Information</h3>
+                        <div className={styles.infoGrid}>
+                            <div className={styles.infoItem}>
+                                <label>Full Name</label>
+                                <p>{full_name || 'N/A'}</p>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <label>Email Address</label>
+                                <p>{email || 'N/A'}</p>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <label>Phone Number</label>
+                                <p>{phone_number || 'N/A'}</p>
+                            </div>
+                            <div className={styles.infoItem}>
+                                <label>Branch</label>
+                                <p>{branch || 'N/A'}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={styles.section}>
+                        <h3 className={styles.sectionTitle}>Profile Management</h3>
+                        <div className={styles.profilesWrapper}>
+                            <label>Current Profiles</label>
+                            <div className={styles.profileTags}>
+                                {profile_names && profile_names.length > 0 ? (
+                                    profile_names.map((profile, index) => (
+                                        <span key={index} className={styles.profileTag}>{profile}</span>
+                                    ))
+                                ) : (
+                                    <p className={styles.noData}>No profiles associated.</p>
+                                )}
+                            </div>
+                            
+                            <div className={styles.appendBox}>
+                                <label>Add New Profile</label>
+                                <form className={styles.appendForm} onSubmit={handleAppendProfile}>
+                                    <input 
+                                        type="text" 
+                                        placeholder="Enter profile name..."
+                                        value={newProfileName}
+                                        onChange={(e) => setNewProfileName(e.target.value)}
+                                        disabled={isAppending}
+                                    />
+                                    <button type="submit" disabled={isAppending || !newProfileName.trim()}>
+                                        {isAppending ? '...' : 'Append'}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={styles.section}>
+                        <h3 className={styles.sectionTitle}>Security</h3>
+                        <div className={styles.securityBox}>
+                            <div className={styles.passwordDisplay}>
+                                <label>Current Password</label>
+                                <div className={styles.passwordField}>
+                                    <span>{showPassword ? (userData?.password || "••••••••") : "••••••••"}</span>
+                                    <button 
+                                        className={styles.eyeBtn} 
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        <img src={showPassword ? closeeye : openeye} alt="Toggle" />
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -162,7 +257,7 @@ const Profilepage = () => {
                 <div className={styles.modalOverlay}>
                     <div className={styles.modalCard}>
                         <div className={styles.modalHeader}>
-                            <h3>Update Password</h3>
+                            <h3>Change Password</h3>
                             <button className={styles.closeBtn} onClick={() => setIsModalOpen(false)}>×</button>
                         </div>
                         <form className={styles.modalForm} onSubmit={handleChangePassword}>
@@ -180,7 +275,7 @@ const Profilepage = () => {
                                 <label>Confirm New Password</label>
                                 <input 
                                     type="password" 
-                                    placeholder="Confirm new password"
+                                    placeholder="Enter new password again"
                                     value={passwordData.confirm}
                                     onChange={(e) => setPasswordData({...passwordData, confirm: e.target.value})}
                                     required 
@@ -188,7 +283,7 @@ const Profilepage = () => {
                             </div>
                             <div className={styles.modalFooter}>
                                 <button type="button" className={styles.cancelBtn} onClick={() => setIsModalOpen(false)}>Cancel</button>
-                                <button type="submit" className={styles.submitBtn}>Update</button>
+                                <button type="submit" className={styles.submitBtn}>Update Password</button>
                             </div>
                         </form>
                     </div>

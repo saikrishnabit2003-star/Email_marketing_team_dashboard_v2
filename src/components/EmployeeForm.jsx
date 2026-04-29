@@ -61,6 +61,16 @@ export function EmployeeForm({ formValues, handleChange }) {
                     <option value="nagarcoil-2">nagarcoil-2</option>
                 </select>
             </fieldset>
+
+            <fieldset className={styles.inputFieldset}>
+                <legend className={styles.inputLegend}>Profile Holder</legend>
+                <input 
+                    name="profile_name" 
+                    value={formValues.profile_name} 
+                    onChange={handleChange} 
+                    placeholder="Enter the Profile Name" 
+                />
+            </fieldset>
         </div>
     );
 }
