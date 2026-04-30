@@ -304,7 +304,7 @@ export function Accounts({ searchTerm }) {
             </div>
             {showPopup && (
                 <div className={styles.popupcontainer}>
-                    <div className={styles.mainpopupbox}>
+                    <div className={`${styles.mainpopupbox} ${popupType !== 'client' ? styles.smallPopup : ''}`}>
                         <div className={styles.header}>
                             <h3 style={{ margin: 0, textTransform: 'capitalize' }}>{popupType} add</h3>
                             <button type="button" onClick={closePopup} style={{ border: 'none', background: 'transparent',color:'red', fontSize: '28px', cursor: 'pointer' }}>×</button>
