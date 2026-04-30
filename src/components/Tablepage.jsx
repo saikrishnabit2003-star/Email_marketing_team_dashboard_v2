@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Style from './Tablepage.module.css'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+import * as XLSX from 'xlsx';
 
 const formatDate = (dateString) => {
     if (!dateString || dateString === 'N/A') return 'N/A';
@@ -213,7 +214,7 @@ export function Tablepage({ searchTerm }) {
             order_status: ['Active', 'Inactive']
         };
 
-        const textareaFields = ['title', 'remarks', 'client_affiliations'];
+        const textareaFields = ['title', 'remarks', 'client_affiliations','journal_name'];
         const linkFields = ['client_drive_link', 'client_details'];
 
         return (
@@ -289,6 +290,109 @@ export function Tablepage({ searchTerm }) {
         );
     };
 
+    const handleExport = () => {
+        if (!filteredData || filteredData.length === 0) {
+            showNotification("No data to export", "error");
+            return;
+        }
+
+        const data = filteredData.map(row => ({
+            "Client ID": String(row.client_id || ''),
+            "Country": row.client_country || '',
+            "Client Email": row.client_Email || '',
+            "Whatsapp No": String(row.client_whatsapp_number || ''),
+            "Order Date": formatDate(row.order_date),
+            "Order Type": row.order_type || '',
+            "Client Ref ID": String(row.ref_no || ''),
+            "Manuscript ID": String(row.manuscript_id || ''),
+            "Title": row.title || '',
+            "Journal Name": row.journal_name || '',
+            "Index": row.index || '',
+            "Rank": row.rank || '',
+            "Total Amount": row.total_amount,
+            "Writing Amount": row.writing_amount,
+            "Modification Amount": row.modification_amount,
+            "PO Amount": row.po_amount,
+            "Writing Start Date": formatDate(row.writing_start_date),
+            "Writing End Date": formatDate(row.writing_end_date),
+            "Modification Start Date": formatDate(row.modification_start_date),
+            "Modification End Date": formatDate(row.modification_end_date),
+            "PO Start Date": formatDate(row.po_start_date),
+            "PO End Date": formatDate(row.po_end_date),
+            "Phase 1 Payment": row.phase_1_payment,
+            "Phase 1 Payment Date": formatDate(row.phase_1_payment_date),
+            "Phase 1 Payment Reason": row.phase_1_payment_details || '',
+            "Phase 2 Payment": row.phase_2_payment,
+            "Phase 2 Payment Date": formatDate(row.phase_2_payment_date),
+            "Phase 2 Payment Reason": row.phase_2_payment_details || '',
+            "Phase 3 Payment": row.phase_3_payment,
+            "Phase 3 Payment Date": formatDate(row.phase_3_payment_date),
+            "Phase 3 Payment Reason": row.phase_3_payment_details || '',
+            "Total Paid Amount": row.paid_amount,
+            "Currency": row.currency || '',
+            "Payment Status": row.payment_status || '',
+            "Bank Account": String(row.bank_account || ''),
+            "Client Affiliations": row.client_affiliations || '',
+            "Remarks": row.remarks || '',
+            "Client Drive": row.client_drive_link || '',
+            "Client Details": row.client_details || '',
+            "Record Status": row.order_status || ''
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(data);
+
+        // Define column widths for better structure in Excel
+        const wscols = [
+            { wch: 15 }, // Client ID
+            { wch: 15 }, // Country
+            { wch: 25 }, // Email
+            { wch: 18 }, // Whatsapp
+            { wch: 12 }, // Order Date
+            { wch: 15 }, // Order Type
+            { wch: 15 }, // Client Ref ID
+            { wch: 15 }, // Manuscript ID
+            { wch: 50 }, // Title (wider)
+            { wch: 40 }, // Journal Name (wider)
+            { wch: 12 }, // Index
+            { wch: 10 }, // Rank
+            { wch: 12 }, // Total Amount
+            { wch: 14 }, // Writing Amount
+            { wch: 18 }, // Mod Amount
+            { wch: 12 }, // PO Amount
+            { wch: 15 }, // Writing Start
+            { wch: 15 }, // Writing End
+            { wch: 15 }, // Mod Start
+            { wch: 15 }, // Mod End
+            { wch: 15 }, // PO Start
+            { wch: 15 }, // PO End
+            { wch: 15 }, // Phase 1
+            { wch: 18 }, // Phase 1 Date
+            { wch: 25 }, // Phase 1 Reason
+            { wch: 15 }, // Phase 2
+            { wch: 18 }, // Phase 2 Date
+            { wch: 25 }, // Phase 2 Reason
+            { wch: 15 }, // Phase 3
+            { wch: 18 }, // Phase 3 Date
+            { wch: 25 }, // Phase 3 Reason
+            { wch: 16 }, // Total Paid
+            { wch: 10 }, // Currency
+            { wch: 15 }, // Status
+            { wch: 20 }, // Bank Account
+            { wch: 40 }, // Client Affiliations
+            { wch: 40 }, // Remarks
+            { wch: 30 }, // Client Drive
+            { wch: 20 }, // Client Details
+            { wch: 15 }  // Record Status
+        ];
+        worksheet['!cols'] = wscols;
+
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Overall_Table");
+
+        XLSX.writeFile(workbook, 'TableData.xlsx');
+        showNotification("Export successful", "success");
+    };
+
     return (
         <div className={Style.page}>
             {notification.visible && (
@@ -304,7 +408,7 @@ export function Tablepage({ searchTerm }) {
                 <div className={Style.tableheader}>
                     <h2>Overall Table</h2>
                     <p>displaying <span>{currentData.length}</span> of {filteredData.length} records</p>
-                    <button className={Style.exportBtn}>Export</button>
+                    <button className={Style.exportBtn} onClick={handleExport}>Export</button>
                 </div>
                 {/* table data */}
                 <div className={Style.tablecontainerdata}>
@@ -322,6 +426,7 @@ export function Tablepage({ searchTerm }) {
                                 <th>client ref id</th>
                                 <th>manuscript id</th>
                                 <th>Title</th>
+                                <th>Journal name</th>
                                 <th>index</th>
                                 <th>rank</th>
                                
@@ -373,6 +478,7 @@ export function Tablepage({ searchTerm }) {
                                         {renderCell(row, actualIndex, 'ref_no')}
                                         {renderCell(row, actualIndex, 'manuscript_id')}
                                         {renderCell(row, actualIndex, 'title')}
+                                        {renderCell(row, actualIndex, 'journal_name')}
                                         {renderCell(row, actualIndex, 'index')}
                                         {renderCell(row, actualIndex, 'rank')}
                                         

@@ -254,7 +254,9 @@
   color: var(--orange);
   font-weight: 500;
 }
-
+.tabledata td:nth-child(11){
+  width: 200px;
+}
 /* Columns 14–17, 24, 26, 28, 30 — blue (amounts) */
 .tabledata td:nth-child(13),
 .tabledata td:nth-child(14),
@@ -271,15 +273,15 @@
 
 /* WhatsApp column — teal */
 .tabledata td:nth-child(6),
-.tabledata td:nth-child(17),
-.tabledata td:nth-child(18), 
+.tabledata td:nth-child(18),
 .tabledata td:nth-child(19), 
 .tabledata td:nth-child(20), 
 .tabledata td:nth-child(21), 
-.tabledata td:nth-child(22),
-.tabledata td:nth-child(24),
-.tabledata td:nth-child(27),
-.tabledata td:nth-child(30) {
+.tabledata td:nth-child(22), 
+.tabledata td:nth-child(23),
+.tabledata td:nth-child(25),
+.tabledata td:nth-child(28),
+.tabledata td:nth-child(31) {
   color: var(--teal);
 }
 
@@ -346,9 +348,10 @@
 }
 
 .tabledata td:nth-child(10),
-.tabledata td:nth-child(33),
+.tabledata td:nth-child(11),
 .tabledata td:nth-child(34),
-.tabledata td:nth-child(35) {
+.tabledata td:nth-child(35),
+.tabledata td:nth-child(36) {
   white-space: pre-wrap;
   width: 280px;
   overflow-wrap: break-word;
@@ -377,12 +380,12 @@
   border-radius: 4px;
 }
 
-.tabledata th:nth-child(11),
-.tabledata td:nth-child(11),
 .tabledata th:nth-child(12),
 .tabledata td:nth-child(12),
 .tabledata th:nth-child(13),
-.tabledata td:nth-child(13) {
+.tabledata td:nth-child(13),
+.tabledata th:nth-child(14),
+.tabledata td:nth-child(14) {
   width: 150px;
   text-align: center;
 }
