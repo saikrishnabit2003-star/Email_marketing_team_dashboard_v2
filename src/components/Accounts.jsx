@@ -365,20 +365,20 @@ export function Accounts({ searchTerm }) {
                                     .map((client, index) => (
                                     <tr key={client._id || client.client_id}>
                                     <td>{index + 1}</td>
-                                    <td>{client.client_id || 'N/A'}</td>
-                                    <td>{client.name || 'N/A'}</td>
-                                    <td>{client.country || 'N/A'}</td>
-                                    <td>{client.email || 'N/A'}</td>
-                                    <td>{client.whatsapp_no || 'N/A'}</td>
-                                    <td>{client.client_handler_name || 'N/A'}</td>
-                                    <td>{client.client_ref_no || 'N/A'}</td>
+                                    <td>{client.client_id}</td>
+                                    <td>{client.name}</td>
+                                    <td>{client.country}</td>
+                                    <td>{client.email}</td>
+                                    <td>{client.whatsapp_no}</td>
+                                    <td>{client.client_handler_name}</td>
+                                    <td>{client.client_ref_no}</td>
                                     {/* <td>
                                         {client.client_link
                                             ? <a href={client.client_link} target="_blank" rel="noreferrer" style={{ color: '#007bff', textDecoration: 'none' }}>View</a>
                                             : 'N/A'}
                                     </td> */}
-                                    <td>{client.bank_account || 'N/A'}</td>
-                                    <td>{client.total_orders || 'N/A'}</td>
+                                    <td>{client.bank_account}</td>
+                                    <td>{client.total_orders}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -426,12 +426,16 @@ export function Accounts({ searchTerm }) {
                                 .map((e, index) => (
                                 <tr key={e._id || index}>
                                     <td>{index + 1}</td>
-                                    <td>{e.full_name || 'N/A'}</td>
-                                    <td>{e.email || 'N/A'}</td>
-                                    <td>{e.password || 'N/A'}</td>
-                                    <td>{e.phone_number || 'N/A'}</td>
-                                    <td>{Array.isArray(e.profile_names) ? e.profile_names.join(',\n') || 'N/A' : e.profile_names || 'N/A'}</td>
-                                    <td>{e.branch || 'N/A'}</td>
+                                    <td>{e.full_name}</td>
+                                    <td>{e.email}</td>
+                                    <td>{e.password}</td>
+                                    <td>{e.phone_number }</td>
+                                    <td>
+                                        <div className={styles.scrollableCell}>
+                                            {Array.isArray(e.profile_names) ? e.profile_names.join(',\n') || 'N/A' : e.profile_names}
+                                        </div>
+                                    </td>
+                                    <td>{e.branch}</td>
                                 </tr>
                             ))}
                             </tbody>
@@ -479,11 +483,11 @@ export function Accounts({ searchTerm }) {
                                 .map((e, index) => (
                                <tr key={e._id || index}>
                                     <td>{index + 1}</td>
-                                    <td>{e.full_name || e.name || 'N/A'}</td>
-                                    <td>{e.email || 'N/A'}</td>
-                                    <td>{e.password || 'N/A'}</td>
-                                    <td>{e.phone_number || 'N/A'}</td>
-                                    <td>{e.branch || 'N/A'}</td>
+                                    <td>{e.full_name || e.name }</td>
+                                    <td>{e.email }</td>
+                                    <td>{e.password }</td>
+                                    <td>{e.phone_number }</td>
+                                    <td>{e.branch }</td>
                                 </tr>
                             ))}
                             </tbody>

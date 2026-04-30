@@ -256,20 +256,30 @@
 }
 
 /* Columns 14–17, 24, 26, 28, 30 — blue (amounts) */
+.tabledata td:nth-child(13),
 .tabledata td:nth-child(14),
 .tabledata td:nth-child(15),
 .tabledata td:nth-child(16),
-.tabledata td:nth-child(17),
-.tabledata td:nth-child(24),
+
+.tabledata td:nth-child(23),
 .tabledata td:nth-child(26),
-.tabledata td:nth-child(28),
-.tabledata td:nth-child(30) {
+.tabledata td:nth-child(29),
+.tabledata td:nth-child(32) {
   color: var(--accent);
   font-weight: 600;
 }
 
 /* WhatsApp column — teal */
-.tabledata td:nth-child(6) {
+.tabledata td:nth-child(6),
+.tabledata td:nth-child(17),
+.tabledata td:nth-child(18), 
+.tabledata td:nth-child(19), 
+.tabledata td:nth-child(20), 
+.tabledata td:nth-child(21), 
+.tabledata td:nth-child(22),
+.tabledata td:nth-child(24),
+.tabledata td:nth-child(27),
+.tabledata td:nth-child(30) {
   color: var(--teal);
 }
 

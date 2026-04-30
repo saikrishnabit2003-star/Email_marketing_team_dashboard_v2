@@ -88,9 +88,6 @@
   color: var(--text-primary);
 }
 
-/* Active tab — controlled via JS by adding an active class, 
-   OR you can target via :focus-within. 
-   Add className conditionally in JSX: activeTab === 'client' → styles.activeTab */
 .headers button.activeTab,
 .headers button[data-active="true"] {
   background: var(--navy);
@@ -196,6 +193,7 @@
   border-bottom: 2px solid var(--border);
 }
 
+/* ── Common th defaults ── */
 .subcontainer2 table thead tr th,
 .tablecontainer2 table thead tr th {
   padding: 13px 14px;
@@ -204,9 +202,22 @@
   text-transform: uppercase;
   letter-spacing: 0.07em;
   color: var(--navy);
-  text-align: left;
+  text-align: left;           /* default left for all headers */
   white-space: nowrap;
   background: var(--card);
+}
+
+/* ── Common td defaults ── */
+.subcontainer2 table tbody tr td,
+.tablecontainer2 table tbody tr td {
+  padding: 11px 14px;
+  font-size: 0.83rem;
+  color: var(--text-primary);
+  text-align: left;           /* default left for all cells */
+  white-space: nowrap;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* ─── Table body rows ───────────────────────────────────────── */
@@ -227,117 +238,183 @@
   border-bottom: none;
 }
 
-.subcontainer2 table tbody tr td,
-.tablecontainer2 table tbody tr td {
-  padding: 11px 14px;
-  font-size: 0.83rem;
-  color: var(--text-primary);
-  white-space: nowrap;
-  max-width: 220px;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
+/* ═══════════════════════════════════════════════════════════════
+   CLIENT TABLE — column-specific rules
+   All nth-child selectors pair th + td together so alignment
+   is always in sync between header and cell.
+   ═══════════════════════════════════════════════════════════════ */
 
-/* ─── Column widths — Client table ─────────────────────────── */
-.subcontainer2 table thead tr :nth-child(1),
-.subcontainer2 table tbody tr :nth-child(1) {
+/* S.NO — center */
+.subcontainer2 table thead tr th:nth-child(1),
+.subcontainer2 table tbody tr td:nth-child(1) {
   width: 60px;
   text-align: center;
-  /* color: var(--text-muted); */
   font-weight: 500;
+  color: var(--text-muted);
 }
 
-/* Client ID — red/pink accent */
-.subcontainer2 table tbody tr :nth-child(2) {
+/* Client ID — pink accent, left */
+.subcontainer2 table thead tr th:nth-child(2),
+.subcontainer2 table tbody tr td:nth-child(2) {
+  width: 120px;
+  text-align: left;
+}
+.subcontainer2 table tbody tr td:nth-child(2) {
   color: var(--accent);
   font-weight: 600;
-  width: 120px;
 }
-.subcontainer2 table thead tr :nth-child(2) { width: 120px; }
 
-.subcontainer2 table thead tr :nth-child(3),
-.subcontainer2 table tbody tr :nth-child(3) { width: 180px; }
-
-.subcontainer2 table thead tr :nth-child(4),
-.subcontainer2 table tbody tr :nth-child(4) { width: 100px; }
-.subcontainer2 table thead tr :nth-child(5){
-  text-align: center;
+/* Client Name — left */
+.subcontainer2 table thead tr th:nth-child(3),
+.subcontainer2 table tbody tr td:nth-child(3) {
+  width: 180px;
+  text-align: left;
 }
-.subcontainer2 table thead tr :nth-child(5),
-.subcontainer2 table tbody tr :nth-child(5) { width: 200px; overflow-wrap: anywhere; }
 
-.subcontainer2 table thead tr :nth-child(6),
-.subcontainer2 table tbody tr :nth-child(6) { width: 140px; }
+/* Location — left */
+.subcontainer2 table thead tr th:nth-child(4),
+.subcontainer2 table tbody tr td:nth-child(4) {
+  width: 100px;
+  text-align: left;
+}
 
-.subcontainer2 table thead tr :nth-child(7),
-.subcontainer2 table tbody tr :nth-child(7) { width: 160px; }
+/* Email — left (was incorrectly center on th only) */
+.subcontainer2 table thead tr th:nth-child(5),
+.subcontainer2 table tbody tr td:nth-child(5) {
+  width: 200px;
+  text-align: left;
+  /* overflow-wrap: anywhere; */
+  white-space: normal;
+}
 
-/* Client Ref No — teal/green accent */
-.subcontainer2 table tbody tr :nth-child(8) {
+/* Whatsapp — left */
+.subcontainer2 table thead tr th:nth-child(6),
+.subcontainer2 table tbody tr td:nth-child(6) {
+  width: 160px;
+  text-align: left;
+}
+
+/* Client Handler — left */
+.subcontainer2 table thead tr th:nth-child(7),
+.subcontainer2 table tbody tr td:nth-child(7) {
+  width: 160px;
+  text-align: left;
+}
+
+/* Client Ref No — green accent, left */
+.subcontainer2 table thead tr th:nth-child(8),
+.subcontainer2 table tbody tr td:nth-child(8) {
+  width: 140px;
+  text-align: left;
+}
+.subcontainer2 table tbody tr td:nth-child(8) {
   color: var(--green);
   font-weight: 600;
-  width: 140px;
 }
-.subcontainer2 table thead tr :nth-child(8) { width: 140px; }
 
-.subcontainer2 table thead tr :nth-child(9),
-.subcontainer2 table tbody tr :nth-child(9) { width: 180px; }
+/* Bank Account — left */
+.subcontainer2 table thead tr th:nth-child(9),
+.subcontainer2 table tbody tr td:nth-child(9) {
+  width: 180px;
+  text-align: left;
+}
 
-/* Orders — red accent */
-.subcontainer2 table tbody tr :nth-child(10) {
+/* Orders — center both header and cell */
+.subcontainer2 table thead tr th:nth-child(10),
+.subcontainer2 table tbody tr td:nth-child(10) {
+  width: 80px;
+  text-align: center;
+}
+.subcontainer2 table tbody tr td:nth-child(10) {
   color: var(--accent);
   font-weight: 700;
-  width: 80px;
-  text-align: center;
-}
-.subcontainer2 table thead tr :nth-child(10) {
-  width: 80px;
-  text-align: center;
 }
 
-/* ─── Column widths — Employee / Admin table ────────────────── */
-.tablecontainer2 table thead tr :nth-child(1),
-.tablecontainer2 table tbody tr :nth-child(1) {
+/* ═══════════════════════════════════════════════════════════════
+   EMPLOYEE & ADMIN TABLE — column-specific rules
+   ═══════════════════════════════════════════════════════════════ */
+
+/* S.NO — center */
+.tablecontainer2 table thead tr th:nth-child(1),
+.tablecontainer2 table tbody tr td:nth-child(1) {
   width: 60px;
   text-align: center;
-  /* color: var(--text-muted); */
   font-weight: 500;
+  color: var(--text-muted);
 }
 
-.tablecontainer2 table thead tr :nth-child(2),
-.tablecontainer2 table tbody tr :nth-child(2) { width: 180px; }
-
-.tablecontainer2 table thead tr :nth-child(3),
-.tablecontainer2 table tbody tr :nth-child(3) { width: 200px; }
-
-.tablecontainer2 table thead tr :nth-child(4),
-.tablecontainer2 table tbody tr :nth-child(4) { width: 160px; }
-
-.tablecontainer2 table thead tr :nth-child(5),
-.tablecontainer2 table tbody tr :nth-child(5) { width: 150px; }
-
-.tablecontainer2 table thead tr :nth-child(6),
-.tablecontainer2 table tbody tr :nth-child(6) { 
-  width: 160px; 
-  white-space: pre-line;
-  line-height: 1.4;
-  overflow: visible;
-  text-overflow: unset;
+/* Name — pink accent, left */
+.tablecontainer2 table thead tr th:nth-child(2),
+.tablecontainer2 table tbody tr td:nth-child(2) {
+  width: 180px;
+  text-align: left;
 }
-
-.tablecontainer2 table thead tr :nth-child(7),
-.tablecontainer2 table tbody tr :nth-child(7) { width: 140px; }
-
-/* Name column - accent color */
-.tablecontainer2 table tbody tr :nth-child(2) {
+.tablecontainer2 table tbody tr td:nth-child(2) {
   color: var(--accent);
   font-weight: 600;
 }
 
-/* Email column - blue color */
-.tablecontainer2 table tbody tr :nth-child(3) {
+/* Email — blue, left */
+.tablecontainer2 table thead tr th:nth-child(3),
+.tablecontainer2 table tbody tr td:nth-child(3) {
+  width: 220px;
+  text-align: left;
+}
+.tablecontainer2 table tbody tr td:nth-child(3) {
   color: var(--blue);
   font-weight: 500;
+}
+
+/* Password — left */
+.tablecontainer2 table thead tr th:nth-child(4),
+.tablecontainer2 table tbody tr td:nth-child(4) {
+  width: 160px;
+  text-align: left;
+}
+
+/* Whatsapp — left */
+.tablecontainer2 table thead tr th:nth-child(5),
+.tablecontainer2 table tbody tr td:nth-child(5) {
+  width: 150px;
+  text-align: left;
+}
+
+/* Profile Holder — left, allow wrap */
+.tablecontainer2 table thead tr th:nth-child(6),
+.tablecontainer2 table tbody tr td:nth-child(6) {
+  width: 180px;
+  text-align: left;
+  white-space: normal;
+  overflow-wrap: break-word;
+}
+
+/* Branch — left */
+.tablecontainer2 table thead tr th:nth-child(7),
+.tablecontainer2 table tbody tr td:nth-child(7) {
+  width: 140px;
+  text-align: left;
+}
+
+/* ─── Scrollable cell (Profile Holder multi-value) ──────────── */
+.scrollableCell {
+  width: 100%;
+  max-height: 60px;
+  overflow-y: auto;
+  white-space: pre-line;
+  line-height: 1.5;
+  word-break: break-word;
+  padding-right: 4px;
+}
+
+.scrollableCell::-webkit-scrollbar {
+  width: 4px;
+}
+.scrollableCell::-webkit-scrollbar-thumb {
+  background: var(--border);
+  border-radius: 4px;
+}
+.scrollableCell::-webkit-scrollbar-track {
+  background: transparent;
 }
 
 /* ─── N/A muted styling ─────────────────────────────────────── */
@@ -412,7 +489,6 @@
   width: 100%;
 }
 
-/* formContainer fills full column height */
 .formcontainer1 > .formContainer {
   height: 100%;
 }
@@ -421,7 +497,6 @@
   .formcontainer1 { grid-template-columns: 1fr; }
 }
 
-/* ── 2-col variant for Employee/Admin (fewer fields) ─── */
 .formcontainer2col {
   display: grid;
   grid-template-columns: 1fr 1fr;

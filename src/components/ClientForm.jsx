@@ -283,8 +283,8 @@ export function ClientForm({ formValues, handleChange, profile_names, client_han
                     >
                        <option value="" disabled>Choose status</option>
                         <option value="Not yet">Not yet</option>
-                        <option value="Partially Paid">Partially Paid</option>
-                        <option value="complete">complete</option>
+                        <option value="partial">Partial</option>
+                        <option value="paid">Paid</option>
                     </select>
                 </fieldset>
 

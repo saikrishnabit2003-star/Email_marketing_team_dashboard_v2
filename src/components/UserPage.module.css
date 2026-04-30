@@ -381,10 +381,11 @@
     color:var(--theme-color, #7d2ae8);
     font-weight: 700;
     font-size:large;
+    text-transform: capitalize;
 }
-.tabledata th,
+
 .tabledata td {
-  text-align: start;
+  text-align: center;
   height: 44px;
   padding: 0 10px;
   font-size: 0.78rem;
@@ -400,9 +401,11 @@
     /* display: flex;
     align-items: center; */
 }
-.tabledata tbody tr :nth-child(2){
+.tabledata tbody tr :nth-child(2),
+.tabledata tbody tr :nth-child(8){
     color: red;
 }
+
 .calendercheckbox{
     margin-left: 20px;
     

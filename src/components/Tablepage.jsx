@@ -209,7 +209,7 @@ export function Tablepage({ searchTerm }) {
             index: ['SCI', 'Scopus', 'SSCI', 'EI', 'Scopus & SCI', 'SCIE'],
             rank: ['Q1', 'Q2', 'Q3', 'Q4', 'Anything', 'Q1 or Q2', 'Q2 or Q3', 'Q3 or Q4'],
             order_type: ['WO/PO', 'MO/PO', 'WO', 'PO', 'MO/RV', 'MO', 'Thesis writing', 'WO/Implementation/PO', 'Review paper writing', 'WO/Conference', 'Improvement'],
-            currency: ['USD', 'INR', 'CHINA'],
+            currency: ['USD', 'INR'],
             order_status: ['Active', 'Inactive']
         };
 
@@ -324,7 +324,7 @@ export function Tablepage({ searchTerm }) {
                                 <th>Title</th>
                                 <th>index</th>
                                 <th>rank</th>
-                                <th>currency</th>
+                               
                                 <th>total amount</th>
                                 <th>writing amount</th>
                                 <th>modification amount</th>
@@ -345,6 +345,7 @@ export function Tablepage({ searchTerm }) {
                                 <th>phase 3 payment date</th>
                                 <th>phase 3 payment reason</th>
                                 <th>Total Paid Amount</th>
+                                 <th>currency</th>
                                 <th>payment status</th>
                                 <th>bank account</th>
                                 <th>client affiliations</th>
@@ -374,7 +375,7 @@ export function Tablepage({ searchTerm }) {
                                         {renderCell(row, actualIndex, 'title')}
                                         {renderCell(row, actualIndex, 'index')}
                                         {renderCell(row, actualIndex, 'rank')}
-                                        {renderCell(row, actualIndex, 'currency')}
+                                        
                                         {renderCell(row, actualIndex, 'total_amount')}
                                         {renderCell(row, actualIndex, 'writing_amount')}
                                         {renderCell(row, actualIndex, 'modification_amount')}
@@ -395,6 +396,7 @@ export function Tablepage({ searchTerm }) {
                                         {renderCell(row, actualIndex, 'phase_3_payment_date', formatDate(row.phase_3_payment_date))}
                                         {renderCell(row, actualIndex, 'phase_3_payment_details')}
                                         {renderCell(row, actualIndex, 'paid_amount')}
+                                        {renderCell(row, actualIndex, 'currency')}
                                         {renderCell(row, actualIndex, 'payment_status')}
                                         {renderCell(row, actualIndex, 'bank_account')}
                                         {renderCell(row, actualIndex, 'client_affiliations')}

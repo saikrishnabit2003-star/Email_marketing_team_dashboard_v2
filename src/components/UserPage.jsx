@@ -14,6 +14,7 @@ export function UserPage({ searchTerm }) {
     const [pendingcount, setpendingcount] = useState(0)
     const [rejcount, settrejcount] = useState(0)
     const [table, settable] = useState([])
+    const [ordersData, setOrdersData] = useState([])
 
     // percentage states
     const [amountPct, setAmountPct] = useState(0)
@@ -69,7 +70,7 @@ export function UserPage({ searchTerm }) {
     const aggregateFromClients = (clientsList) => {
         const aggregated = {};
         clientsList.forEach(c => {
-            const country = c.country || 'Unknown';
+            const country = c.country || c.client_country || 'Unknown';
             if (aggregated[country]) {
                 aggregated[country] += 1;
             } else {
@@ -102,15 +103,23 @@ export function UserPage({ searchTerm }) {
                     }
 
                     // clients table (Source of truth for reactive stats)
-                    const clients = d.handled_clients || [];
+                    const clients = d.country_based_details || [];
                     settable(clients);
 
+                    const clientdetail = d.order_status_details || [];
+                    setOrdersData(clientdetail);
                     // Overall analysis can be calculated here or reactively. 
                     // Let's keep it here for simplicity since it's "static" overall data.
-                    const overallAmt = clients.reduce((s, c) => s + (c.paid_amount || 0), 0);
-                    const totalClt = clients.length;
-                    const pendingClt = clients.filter(c => c.payment_status === "Pending" || c.payment_status === "Not yet").length;
-                    const partialClt = clients.filter(c => c.payment_status === "Partial").length;
+                    const overallAmt = clientdetail.reduce((s, c) => s + (c.paid_amount || 0), 0);
+                    const totalClt = clientdetail.length;
+                    const pendingClt = clientdetail.filter(c => {
+                        const status = (c.payment_status || "").toLowerCase();
+                        return status === "pending" || status === "not yet";
+                    }).length;
+                    const partialClt = clientdetail.filter(c => {
+                        const status = (c.order_status || "").toLowerCase();
+                        return status === "inactive";
+                    }).length;
 
                     settotalamount(overallAmt);
                     settotalclient(totalClt);
@@ -149,8 +158,10 @@ export function UserPage({ searchTerm }) {
             const endOfDay = new Date(endDate);
             endOfDay.setHours(23, 59, 59, 999);
 
-            filteredList = table.filter(c => {
-                const itemDate = new Date(c.created_at);
+            filteredList = ordersData.filter(c => {
+                const dateStr = c.created_at || c.order_date;
+                if (!dateStr) return false;
+                const itemDate = new Date(dateStr);
                 return itemDate >= startOfDay && itemDate <= endOfDay;
             });
 
@@ -162,20 +173,28 @@ export function UserPage({ searchTerm }) {
             const curMonth = now.getMonth();
             const curYear = now.getFullYear();
 
-            filteredList = table.filter(c => {
-                const d = new Date(c.created_at);
+            filteredList = ordersData.filter(c => {
+                const dateStr = c.created_at || c.order_date;
+                if (!dateStr) return false;
+                const d = new Date(dateStr);
                 return d.getMonth() === curMonth && d.getFullYear() === curYear;
             });
 
             // Pie Chart default (use rawData from API or aggregate from table)
-            setPieData(rawData.length > 0 ? rawData : aggregateFromClients(table));
+            setPieData(rawData.length > 0 ? rawData : aggregateFromClients(ordersData));
         }
 
         // Calculate stats for the filtered list
         const mAmount = filteredList.reduce((s, c) => s + (c.paid_amount || 0), 0);
         const mTotal = filteredList.length;
-        const mPendingCount = filteredList.filter(c => c.payment_status === "Pending" || c.payment_status === "Partial" || c.payment_status === "Not Yet").length;
-        const mRejCount = filteredList.filter(c => c.payment_status === "Partial").length;
+        const mPendingCount = filteredList.filter(c => {
+            const status = (c.payment_status || "").toLowerCase();
+            return status === "pending" || status === "partial" || status === "not yet";
+        }).length;
+        const mRejCount = filteredList.filter(c => {
+            const status = (c.order_status || "").toLowerCase();
+            return status === "inactive";
+        }).length;
 
         setMonthAmount(mAmount);
         setMonthClients(mTotal);
@@ -190,7 +209,7 @@ export function UserPage({ searchTerm }) {
         setMonthPendingPct(mPPct.toFixed(1));
         setMonthRejPct(mRPct.toFixed(1));
 
-    }, [table, isDateFilterActive, startDate, endDate, rawData]);
+    }, [ordersData, isDateFilterActive, startDate, endDate, rawData]);
 
     return (
         <div className={Style.contentpage}>
@@ -218,7 +237,7 @@ export function UserPage({ searchTerm }) {
                             </div>
                             <div id={Style.analaysistext}>
                                 <p>{totalclient}</p>
-                                <p>Total Clients</p>
+                                <p>Total Orders</p>
                             </div>
                         </div>
 
@@ -265,7 +284,7 @@ export function UserPage({ searchTerm }) {
                             </div>
                             <div id={Style.analaysistext}>
                                 <p>{monthClients}</p>
-                                <p>Total Clients</p>
+                                <p>Total Orders</p>
                             </div>
                         </div>
 
@@ -360,11 +379,13 @@ export function UserPage({ searchTerm }) {
                             <thead>
                                 <tr>
                                     <th>S.no</th>
-                                    <th>Cilent id</th>
-                                    <th>Status</th>
-                                    <th>Client Handler</th>
                                     <th>Country</th>
-                                    <th>Created Date</th>
+                                    <th>Total Clients</th>
+                                    <th>Total Orders</th>
+                                    <th>Paid count</th>
+                                    <th>Pending count</th>
+                                    <th>Rejected count</th>
+                                    <th>Paid amount</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -378,11 +399,13 @@ export function UserPage({ searchTerm }) {
                                     .map((item, index) => (
                                         <tr key={index}>
                                             <td>{index + 1}</td>
-                                            <td>{item.client_id || 'N/A'}</td>
-                                            <td>{item.payment_status || 'N/A'}</td>
-                                            <td>{item.client_handler || 'N/A'}</td>
-                                            <td>{item.country || 'N/A'}</td>
-                                            <td>{formatDate(item.created_at || 'N/A')}</td>
+                                            <td>{item.country_name}</td>
+                                            <td>{item.client_count}</td>
+                                            <td>{item.order_count}</td>
+                                            <td>{item.paid_count}</td>
+                                            <td>{item.pending_count}</td>
+                                            <td>{item.reject_count}</td>
+                                            <td>{item.paid_amount}</td>
                                         </tr>
                                     ))}
                             </tbody>
