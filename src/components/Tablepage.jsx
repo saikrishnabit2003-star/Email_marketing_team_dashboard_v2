@@ -215,7 +215,7 @@ export function Tablepage({ searchTerm }) {
         };
 
         const textareaFields = ['title', 'remarks', 'client_affiliations','journal_name'];
-        const linkFields = ['client_drive_link', 'client_details'];
+        const linkFields = ['client_drive_link', 'clients_details'];
 
         return (
             <td onDoubleClick={() => handleDoubleClick(rowIndex, fieldName, row[fieldName])}>
@@ -481,7 +481,6 @@ export function Tablepage({ searchTerm }) {
                                         {renderCell(row, actualIndex, 'journal_name')}
                                         {renderCell(row, actualIndex, 'index')}
                                         {renderCell(row, actualIndex, 'rank')}
-                                        
                                         {renderCell(row, actualIndex, 'total_amount')}
                                         {renderCell(row, actualIndex, 'writing_amount')}
                                         {renderCell(row, actualIndex, 'modification_amount')}
@@ -508,7 +507,7 @@ export function Tablepage({ searchTerm }) {
                                         {renderCell(row, actualIndex, 'client_affiliations')}
                                         {renderCell(row, actualIndex, 'remarks')}
                                         {renderCell(row, actualIndex, 'client_drive_link')}
-                                        {renderCell(row, actualIndex, 'client_details')}
+                                        {renderCell(row, actualIndex, 'clients_details')}
                                         {renderCell(row, actualIndex, 'order_status')}
                                     </tr>
                                 );
