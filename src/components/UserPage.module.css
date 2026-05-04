@@ -523,3 +523,9 @@
         font-size: 1.1rem;
     }
 }
+
+/* Remove focus outlines from Recharts elements when clicked */
+:global(.recharts-wrapper) *,
+:global(.recharts-surface) * {
+    outline: none !important;
+}

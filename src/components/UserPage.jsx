@@ -338,20 +338,21 @@ export function UserPage({ searchTerm }) {
 
                     {/* box 2 */}
                     <div id={Style.box2}>
-                        <ResponsiveContainer width="100%" height={400}>
-                            <PieChart>
+                        <ResponsiveContainer width="100%" height="100%">
+                            <PieChart style={{ outline: 'none' }}>
                                 <Pie
                                     data={pieData}
                                     cx="50%"
-                                    cy="51%"
+                                    cy="50%"
                                     innerRadius={90}
-                                    outerRadius={170}
-                                    paddingAngle={2}
+                                    outerRadius={172}
+                                    paddingAngle={3}
                                     dataKey="value"
                                     stroke="#ffffff"
                                     strokeWidth={2}
                                     label={({ name, value, percent }) => percent > 0 ? `${name} \u2014 ${(percent * 100).toFixed(2)}%` : ''}
                                     labelPosition="outside"
+                                    style={{ outline: 'none' }}
                                 >
                                     {pieData.map((entry, index) => {
                                         const color = COLORS[index % COLORS.length];
@@ -361,6 +362,7 @@ export function UserPage({ searchTerm }) {
                                                 fill={color}
                                                 stroke={color}
                                                 strokeWidth={2}
+                                                style={{ outline: 'none' }}
                                             />
                                         );
                                     })}

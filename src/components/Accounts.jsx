@@ -39,7 +39,7 @@ export function Accounts({ searchTerm }) {
     });
 
     const [sampleData, setSampleData] = useState([]);
-    const [client_handlers,setclient_handlers]=useState([]);
+    const [client_handlers, setclient_handlers] = useState([]);
     const [profile_names, setprofile_names] = useState([]);
     const [loading, setLoading] = useState(false);
     const [notification, setNotification] = useState({ message: '', type: '', visible: false });
@@ -68,8 +68,8 @@ export function Accounts({ searchTerm }) {
                 // API may return array directly or nested under data/clients
                 const list = Array.isArray(data) ? data
                     : Array.isArray(data?.data) ? data.data
-                    : Array.isArray(data?.clients) ? data.clients
-                    : [];
+                        : Array.isArray(data?.clients) ? data.clients
+                            : [];
                 setSampleData(list);
                 setclient_handlers(data?.details?.employee_names || data?.detail?.employee_names || []);
                 setprofile_names(data?.details?.profile_names || data?.detail?.profile_names || []);
@@ -101,8 +101,8 @@ export function Accounts({ searchTerm }) {
                 // API may return array directly or nested under data/users
                 const list = Array.isArray(data) ? data
                     : Array.isArray(data?.data) ? data.data
-                    : Array.isArray(data?.data?.users) ? data.data.users
-                    : [];
+                        : Array.isArray(data?.data?.users) ? data.data.users
+                            : [];
                 setEmpData(list);
             })
             .catch(err => console.error("Failed to fetch employees:", err))
@@ -131,8 +131,8 @@ export function Accounts({ searchTerm }) {
                 console.log('Admins response:', data);
                 const list = Array.isArray(data) ? data
                     : Array.isArray(data?.data) ? data.data
-                    : Array.isArray(data?.data?.admins) ? data.data.admins
-                    : [];
+                        : Array.isArray(data?.data?.admins) ? data.data.admins
+                            : [];
                 setAdminData(list);
             })
             .catch(err => console.error("Failed to fetch admins:", err))
@@ -173,7 +173,7 @@ export function Accounts({ searchTerm }) {
             name: "",
             password: "",
             branch: "",
-            payment:true
+            payment: true
         });
     };
 
@@ -189,7 +189,7 @@ export function Accounts({ searchTerm }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const token = localStorage.getItem('token');
-        
+
         if (!token) {
             showNotification('No authentication token found. Please login first.', 'error');
             return;
@@ -222,7 +222,8 @@ export function Accounts({ searchTerm }) {
                 payment_status: formValues.payment_status,
                 order_date: formValues.order_date,
                 client_handler: formValues.client_handler,
-                client_bank_account: formValues.bank_account
+                client_bank_account: formValues.bank_account,
+                order_status: "Active"
             };
         } else if (popupType === 'employee') {
             endpoint = 'https://email-marketing-dashboard-v1.vercel.app/users';
@@ -233,7 +234,7 @@ export function Accounts({ searchTerm }) {
                 phone_number: formValues.whatsapp,
                 branch: formValues.branch.toUpperCase(),
                 profile_names: formValues.profile_name ? formValues.profile_name.split(',').map(s => s.trim().toUpperCase()).filter(s => s !== "") : [],
-                role:"employee"
+                role: "employee"
             };
         } else if (popupType === 'manager' || popupType === 'admin') {
             endpoint = 'https://email-marketing-dashboard-v1.vercel.app/managers';
@@ -243,7 +244,7 @@ export function Accounts({ searchTerm }) {
                 password: formValues.password,
                 phone_number: formValues.whatsapp,
                 branch: formValues.branch.toUpperCase(),
-                role:"manager"
+                role: "manager"
             };
         }
 
@@ -307,7 +308,7 @@ export function Accounts({ searchTerm }) {
                     <div className={`${styles.mainpopupbox} ${popupType !== 'client' ? styles.smallPopup : ''}`}>
                         <div className={styles.header}>
                             <h3 style={{ margin: 0, textTransform: 'capitalize' }}>{popupType} add</h3>
-                            <button type="button" onClick={closePopup} style={{ border: 'none', background: 'transparent',color:'red', fontSize: '28px', cursor: 'pointer' }}>×</button>
+                            <button type="button" onClick={closePopup} style={{ border: 'none', background: 'transparent', color: 'red', fontSize: '28px', cursor: 'pointer' }}>×</button>
                         </div>
                         <form onSubmit={handleSubmit} className={styles.popupform}>
                             {popupType === 'client' && <ClientForm formValues={formValues} handleChange={handleChange} profile_names={profile_names} client_handlers={client_handlers} />}
@@ -321,7 +322,7 @@ export function Accounts({ searchTerm }) {
                     </div>
                 </div>
             )}
-            
+
             {activeTab === "client" && (
                 <div className={styles.container}>
                     <div id={styles.subcontainer1}>
@@ -345,12 +346,12 @@ export function Accounts({ searchTerm }) {
                                     <th>Orders</th>
                                 </tr>
                             </thead>
-                             <tbody>
+                            <tbody>
                                 {loading ? (
                                     <tr><td colSpan={10} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
                                 ) : sampleData.filter(client => {
                                     if (!searchTerm) return true;
-                                    return Object.values(client).some(val => 
+                                    return Object.values(client).some(val =>
                                         String(val).toLowerCase().includes(searchTerm.toLowerCase())
                                     );
                                 }).length === 0 ? (
@@ -358,29 +359,29 @@ export function Accounts({ searchTerm }) {
                                 ) : sampleData
                                     .filter(client => {
                                         if (!searchTerm) return true;
-                                        return Object.values(client).some(val => 
+                                        return Object.values(client).some(val =>
                                             String(val).toLowerCase().includes(searchTerm.toLowerCase())
                                         );
                                     })
                                     .map((client, index) => (
-                                    <tr key={client._id || client.client_id}>
-                                    <td>{index + 1}</td>
-                                    <td>{client.client_id}</td>
-                                    <td>{client.name}</td>
-                                    <td>{client.country}</td>
-                                    <td>{client.email}</td>
-                                    <td>{client.whatsapp_no}</td>
-                                    <td>{client.client_handler_name}</td>
-                                    <td>{client.client_ref_no}</td>
-                                    {/* <td>
+                                        <tr key={client._id || client.client_id}>
+                                            <td>{index + 1}</td>
+                                            <td>{client.client_id}</td>
+                                            <td>{client.name}</td>
+                                            <td>{client.country}</td>
+                                            <td>{client.email}</td>
+                                            <td>{client.whatsapp_no}</td>
+                                            <td>{client.client_handler_name}</td>
+                                            <td>{client.client_ref_no}</td>
+                                            {/* <td>
                                         {client.client_link
                                             ? <a href={client.client_link} target="_blank" rel="noreferrer" style={{ color: '#007bff', textDecoration: 'none' }}>View</a>
                                             : 'N/A'}
                                     </td> */}
-                                    <td>{client.bank_account}</td>
-                                    <td>{client.total_orders}</td>
-                                    </tr>
-                                ))}
+                                            <td>{client.bank_account}</td>
+                                            <td>{client.total_orders}</td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
@@ -406,42 +407,42 @@ export function Accounts({ searchTerm }) {
                                     <th>Branch</th>
                                 </tr>
                             </thead>
-                             <tbody>
-                            {empLoading ? (
-                                <tr><td colSpan={7} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
-                            ) : empData.filter(e => {
-                                if (!searchTerm) return true;
-                                return Object.values(e).some(val => 
-                                    String(val).toLowerCase().includes(searchTerm.toLowerCase())
-                                );
-                            }).length === 0 ? (
-                                <tr><td colSpan={7} style={{ textAlign: 'center', padding: '16px' }}>No employees found.</td></tr>
-                            ) : empData
-                                .filter(e => {
+                            <tbody>
+                                {empLoading ? (
+                                    <tr><td colSpan={7} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
+                                ) : empData.filter(e => {
                                     if (!searchTerm) return true;
-                                    return Object.values(e).some(val => 
+                                    return Object.values(e).some(val =>
                                         String(val).toLowerCase().includes(searchTerm.toLowerCase())
                                     );
-                                })
-                                .map((e, index) => (
-                                <tr key={e._id || index}>
-                                    <td>{index + 1}</td>
-                                    <td>{e.full_name}</td>
-                                    <td>{e.email}</td>
-                                    <td>{e.password}</td>
-                                    <td>{e.phone_number }</td>
-                                    <td>
-                                        <div className={styles.scrollableCell}>
-                                            {Array.isArray(e.profile_names) ? e.profile_names.join(',\n') || 'N/A' : e.profile_names}
-                                        </div>
-                                    </td>
-                                    <td>{e.branch}</td>
-                                </tr>
-                            ))}
+                                }).length === 0 ? (
+                                    <tr><td colSpan={7} style={{ textAlign: 'center', padding: '16px' }}>No employees found.</td></tr>
+                                ) : empData
+                                    .filter(e => {
+                                        if (!searchTerm) return true;
+                                        return Object.values(e).some(val =>
+                                            String(val).toLowerCase().includes(searchTerm.toLowerCase())
+                                        );
+                                    })
+                                    .map((e, index) => (
+                                        <tr key={e._id || index}>
+                                            <td>{index + 1}</td>
+                                            <td>{e.full_name}</td>
+                                            <td>{e.email}</td>
+                                            <td>{e.password}</td>
+                                            <td>{e.phone_number}</td>
+                                            <td>
+                                                <div className={styles.scrollableCell}>
+                                                    {Array.isArray(e.profile_names) ? e.profile_names.join(',\n') || 'N/A' : e.profile_names}
+                                                </div>
+                                            </td>
+                                            <td>{e.branch}</td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
-                    
+
                 </div>
             )}
 
@@ -463,37 +464,37 @@ export function Accounts({ searchTerm }) {
                                     <th>Branch</th>
                                 </tr>
                             </thead>
-                             <tbody>
-                            {adminLoading ? (
-                                <tr><td colSpan={6} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
-                            ) : adminData.filter(e => {
-                                if (!searchTerm) return true;
-                                return Object.values(e).some(val => 
-                                    String(val).toLowerCase().includes(searchTerm.toLowerCase())
-                                );
-                            }).length === 0 ? (
-                                <tr><td colSpan={6} style={{ textAlign: 'center', padding: '16px' }}>No admins found.</td></tr>
-                            ) : adminData
-                                .filter(e => {
+                            <tbody>
+                                {adminLoading ? (
+                                    <tr><td colSpan={6} style={{ textAlign: 'center', padding: '16px' }}>Loading...</td></tr>
+                                ) : adminData.filter(e => {
                                     if (!searchTerm) return true;
-                                    return Object.values(e).some(val => 
+                                    return Object.values(e).some(val =>
                                         String(val).toLowerCase().includes(searchTerm.toLowerCase())
                                     );
-                                })
-                                .map((e, index) => (
-                               <tr key={e._id || index}>
-                                    <td>{index + 1}</td>
-                                    <td>{e.full_name || e.name }</td>
-                                    <td>{e.email }</td>
-                                    <td>{e.password }</td>
-                                    <td>{e.phone_number }</td>
-                                    <td>{e.branch }</td>
-                                </tr>
-                            ))}
+                                }).length === 0 ? (
+                                    <tr><td colSpan={6} style={{ textAlign: 'center', padding: '16px' }}>No admins found.</td></tr>
+                                ) : adminData
+                                    .filter(e => {
+                                        if (!searchTerm) return true;
+                                        return Object.values(e).some(val =>
+                                            String(val).toLowerCase().includes(searchTerm.toLowerCase())
+                                        );
+                                    })
+                                    .map((e, index) => (
+                                        <tr key={e._id || index}>
+                                            <td>{index + 1}</td>
+                                            <td>{e.full_name || e.name}</td>
+                                            <td>{e.email}</td>
+                                            <td>{e.password}</td>
+                                            <td>{e.phone_number}</td>
+                                            <td>{e.branch}</td>
+                                        </tr>
+                                    ))}
                             </tbody>
                         </table>
                     </div>
-                    
+
                 </div>
             )}
         </div>
