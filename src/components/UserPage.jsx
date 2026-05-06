@@ -226,7 +226,7 @@ export function UserPage({ searchTerm }) {
                             </div>
                             <div id={Style.analaysistext}>
                                 {/* <p title=" Converted from country_split values to USD\>${totalUsdAmount.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}</p> */}
-                                <p>{totalamount}</p>
+                                <p>$ {Math.round(totalamount * 100) / 100}</p>
                                 <p>overall amount</p>
                             </div>
                         </div>
@@ -273,7 +273,7 @@ export function UserPage({ searchTerm }) {
                                 <img src={amounticon2} alt="" />
                             </div>
                             <div id={Style.analaysistext}>
-                                <p>{monthAmount}</p>
+                                <p>{Math.round(monthAmount * 100) / 100}</p>
                                 <p>Total amount</p>
                             </div>
                         </div>
